@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using RestSharp;
 using Microsoft.WindowsAzure.Storage.Auth;
+using System.Threading.Tasks;
 
 namespace LastFM.ReaderCore
 {
     public class LastFMRunTime
     {
-        static string lastFMKey = LastFMConfig.getConfig("LastFMSettings:lastfmkey");
-        static string storageAccount = LastFMConfig.getConfig("LastFMSettings:storageaccount");
-        static string storageKey = LastFMConfig.getConfig("LastFMSettings:storagekey");
+        static string lastFMKey = LastFMConfig.getConfig("lastfmkey");
+        static string storageAccount = LastFMConfig.getConfig("storageaccount");
+        static string storageKey = LastFMConfig.getConfig("storagekey");
 
         public static IEnumerable<Track> getLastFMRecordsByPage(string userName, int pageSize, int page)
         {
@@ -56,7 +57,7 @@ namespace LastFM.ReaderCore
 
         }
 
-        public static async void  WriteToBLOB(List<Track> allTracks, string username)
+        public static async Task WriteToBLOB(List<Track> allTracks, string username)
         {
             var blobCreds = new StorageCredentials(storageAccount, storageKey);
             var storageUri = new Uri(@"https://" + storageAccount + ".blob.core.windows.net/");
@@ -76,8 +77,7 @@ namespace LastFM.ReaderCore
                 sw.Write(allTracksSerialized);
                 sw.Close();
             }
-            //blobstream.Close();
+            blobstream.Close();
         }
-
     }
 }

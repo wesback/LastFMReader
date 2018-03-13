@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
 
 namespace LastFM.ReaderCore
 {
@@ -12,24 +11,27 @@ namespace LastFM.ReaderCore
         #if DEBUG
             .AddJsonFile($"appsettings.debug.json", false, true)
         #else
-            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile($"appsettings.json", false, true)
         #endif
+            .AddEnvironmentVariables()
             .Build();
         public static string getConfig(string configName)
         {
             return _config[configName];
         }
 
-        public static List<string> getConfigArray(string configName, string configItem)
+        /*
+        public static List<string> getConfigArray(string configName)
         {
             List<string> configItems = new List<string>();
             IConfigurationSection configArray = _config.GetSection(configName);
             foreach (var c in configArray.GetChildren())
             {
-                configItems.Add(c[configItem].ToString());
+                configItems.Add(c.Value);
             }
 
             return configItems;
         }
+        */
     }
 }
