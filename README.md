@@ -4,15 +4,18 @@ Small demo app that uses the LastFM API to get your track history
 Please make sure your read the LastFM TOS if you want to use this application
 https://www.last.fm/api/tos
 
+![LastFM](https://cdn.last.fm/flatness/badges/lastfm_red.gif)
+
 # Get started
 Create an Azure Storage Account
+
 By default a container lastfmdata is expected
 
 Change the appsettings.json file
-Replace <LASTFMKEY> with your LastFM API key (you can get yours at https://www.last.fm/api)
-Replace <STORAGEACCOUNT> with the storage account you created
-Replace <STORAGEKEY> with the key
-Replace or add <USER> entries with the usernames you want to extract information for
+Replace "<LASTFMKEY>" with your LastFM API key (you can get yours at https://www.last.fm/api)
+Replace "<STORAGEACCOUNT>" with the storage account you created
+Replace "<STORAGEKEY>" with the key
+Replace or add "<USER>" entries with the usernames you want to extract information for
 
 # Docker
 Install the Azure CLI: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest or go to https://shell.azure.com/
