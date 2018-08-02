@@ -12,8 +12,8 @@ namespace LastFM.ReaderCore
             .AddJsonFile($"appsettings.debug.json", false, true)
         #else
             .AddJsonFile($"appsettings.json", false, true)
-        #endif
             .AddEnvironmentVariables()
+        #endif
             .Build();
         public static string getConfig(string configName)
         {

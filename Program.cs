@@ -8,7 +8,7 @@ namespace LastFM.ReaderCore
     {
         static void Main(string[] args)
         {
-             processStart().Wait();
+             processStart().GetAwaiter().GetResult();
         }
 
         static async Task processStart()
