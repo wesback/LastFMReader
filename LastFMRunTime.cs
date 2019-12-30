@@ -79,5 +79,27 @@ namespace LastFM.ReaderCore
             }
             blobstream.Close();
         }
+
+        public static string getLastFMArtistTag(string artist)
+        {
+            var client = new RestClient("http://ws.audioscrobbler.com/2.0/");
+            var request = new RestRequest("", Method.POST);
+
+            request.AddQueryParameter("method", "artist.gettoptags");
+            request.AddQueryParameter("api_key", lastFMKey);
+            request.AddQueryParameter("format", "json");
+            request.AddQueryParameter("artist", artist);
+
+
+            var response = client.Execute(request);
+            var content = response.Content;
+
+            var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistTags>(content);
+            if (deserialized != null && deserialized.Toptags.Tag.Length > 0)
+            {
+                return deserialized.Toptags.Tag[0].Name;
+            }
+            else return "";
+        }
     }
 }

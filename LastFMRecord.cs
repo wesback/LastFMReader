@@ -36,6 +36,7 @@ namespace LastFM.ReaderCore
         public Image[] image { get; set; }
         public Date date { get; set; }
         public string user { get; set; }
+        public string genre { get; set; }
     }
 
     public class Artist
