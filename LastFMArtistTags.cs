@@ -6,6 +6,7 @@ namespace LastFM.ReaderCore
     {
         [JsonProperty("toptags")]
         public Toptags Toptags { get; set; }
+
     }
 
     public partial class Toptags

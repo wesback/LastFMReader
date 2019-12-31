@@ -101,5 +101,26 @@ namespace LastFM.ReaderCore
             }
             else return "";
         }
+        public static string getLastFMArtistCorrection(string artist)
+        {
+            var client = new RestClient("http://ws.audioscrobbler.com/2.0/");
+            var request = new RestRequest("", Method.POST);
+
+            request.AddQueryParameter("method", "artist.getcorrection");
+            request.AddQueryParameter("api_key", lastFMKey);
+            request.AddQueryParameter("format", "json");
+            request.AddQueryParameter("artist", artist);
+
+
+            var response = client.Execute(request);
+            var content = response.Content;
+
+            var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistCorrection>(content);
+            if (deserialized != null && deserialized.Corrections.Correction.Artist.name != null)
+            {
+                return deserialized.Corrections.Correction.Artist.name;
+            }
+            else return artist;
+        }
     }
 }

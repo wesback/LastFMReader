@@ -8,7 +8,8 @@ namespace LastFM.ReaderCore
 {
     class Program
     {
-        static IMemoryCache cache = new MemoryCache(new MemoryCacheOptions());
+        static IMemoryCache tagCache = new MemoryCache(new MemoryCacheOptions());
+        static IMemoryCache correctionCache = new MemoryCache(new MemoryCacheOptions());
         static TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
         static void Main(string[] args)
         {
@@ -51,8 +52,10 @@ namespace LastFM.ReaderCore
                     if (at.user == null)
                         at.user = user;
                     
+                    at.artist.name = getArtistCorrection(at.artist.name);
                     //Check genre for artist and add to output
                     at.genre = getArtistTag(at.artist.name);
+                    
                 });
                 
                 await LastFMRunTime.WriteToBLOB(allTracks, user);
@@ -64,21 +67,38 @@ namespace LastFM.ReaderCore
                 Console.WriteLine("Something happened - " + ex.Message);
             }
         }
+        
         static string getArtistTag(string artist)
         {
             string topTag;
 
             // set if found in cache, if not call the api
-            bool found = cache.TryGetValue(artist, out topTag);
+            bool found = tagCache.TryGetValue(artist, out topTag);
 
             if (found == false)
             {
                 topTag = LastFMRunTime.getLastFMArtistTag(artist);
-                var result = cache.Set(artist, topTag);
+                var result = tagCache.Set(artist, topTag);
             }
 
             // set proper casing before returning
             return textInfo.ToTitleCase(topTag);
+        }
+
+        static string getArtistCorrection(string artist)
+        {
+            string correctedArtist;
+
+            // set if found in cache, if not call the api
+            bool found = correctionCache.TryGetValue(artist, out correctedArtist);
+
+            if (found == false)
+            {
+                correctedArtist = LastFMRunTime.getLastFMArtistCorrection(artist);
+                var result = correctionCache.Set(artist, correctedArtist);
+            }
+
+            return correctedArtist;
         }
     }
 }
