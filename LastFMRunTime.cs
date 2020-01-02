@@ -18,7 +18,7 @@ namespace LastFM.ReaderCore
 
         static LastFMRunTime()
         {
-           var rules = File.ReadAllText("CleaningRules.json");
+           var rules = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "CleaningRules.json"));
            cleaningRules = JsonConvert.DeserializeObject<CleaningRule>(rules);
         }
 
