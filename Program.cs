@@ -47,7 +47,8 @@ namespace LastFM.ReaderCore
                 }
                 
                 //Add username to every row
-                allTracks.ForEach(at =>
+                //allTracks.ForEach(at =>
+                Parallel.ForEach(allTracks, new ParallelOptions { MaxDegreeOfParallelism = 8}, (at)  => 
                 {
                     if (at.user == null)
                         at.user = user;
@@ -55,6 +56,9 @@ namespace LastFM.ReaderCore
                     at.artist.name = getArtistCorrection(at.artist.name);
                     //Check genre for artist and add to output
                     at.genre = getArtistTag(at.artist.name);
+
+                    //Clean title
+                    at.cleanTitle = LastFMRunTime.cleanseTitle(at.name);
                     
                 });
                 

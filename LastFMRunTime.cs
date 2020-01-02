@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using RestSharp;
 using Microsoft.WindowsAzure.Storage.Auth;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace LastFM.ReaderCore
 {
@@ -11,6 +14,13 @@ namespace LastFM.ReaderCore
         static string lastFMKey = LastFMConfig.getConfig("lastfmkey");
         static string storageAccount = LastFMConfig.getConfig("storageaccount");
         static string storageKey = LastFMConfig.getConfig("storagekey");
+        static CleaningRule cleaningRules;
+
+        static LastFMRunTime()
+        {
+           var rules = File.ReadAllText("CleaningRules.json");
+           cleaningRules = JsonConvert.DeserializeObject<CleaningRule>(rules);
+        }
 
         public static IEnumerable<Track> getLastFMRecordsByPage(string userName, int pageSize, int page)
         {
@@ -121,6 +131,35 @@ namespace LastFM.ReaderCore
                 return deserialized.Corrections.Correction.Artist.name;
             }
             else return artist;
+        }
+
+        public static string cleanseTitle(string title)
+        {
+            string cleanTitle = title;
+
+            foreach (Rule r in cleaningRules.Rules.Rule)
+            {
+                if (r.IsRegEx)
+                {
+                    cleanTitle = cleanseWithRegEx(cleanTitle, r.OldValue);
+                }
+                else
+                {
+                    cleanTitle = cleanTitle.Replace(r.OldValue, r.NewValue);           
+                }
+            }
+
+            return cleanTitle.TrimEnd();
+
+
+
+            
+        }
+
+        private static string cleanseWithRegEx(string title, string pattern)
+        {
+            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
+            return rgx.Replace(title, "");
         }
     }
 }

@@ -37,6 +37,7 @@ namespace LastFM.ReaderCore
         public Date date { get; set; }
         public string user { get; set; }
         public string genre { get; set; }
+        public string cleanTitle { get; set; }
     }
 
     public class Artist
