@@ -32,7 +32,7 @@ namespace LastFM.ReaderCore
                 var allTracks = new List<Track>();
 
                 #if DEBUG
-                    int totalPages = 1;
+                    int totalPages = 10;
                 #else
                     //Calls the API and gets the number of pages to grab
                     int totalPages = LastFMRunTime.getLastFMPages(user, pageSize, page);
@@ -44,11 +44,12 @@ namespace LastFM.ReaderCore
                 {
                     var records = LastFMRunTime.getLastFMRecordsByPage(user, pageSize, i);
                     allTracks.AddRange(records);
+                    Console.WriteLine(string.Format("Page {0} of {1} processed", i.ToString(), totalPages.ToString()));
                 }
                 
                 //Add username to every row
                 //allTracks.ForEach(at =>
-                Parallel.ForEach(allTracks, new ParallelOptions { MaxDegreeOfParallelism = 8}, (at)  => 
+                Parallel.ForEach(allTracks, new ParallelOptions { MaxDegreeOfParallelism = 4}, (at)  => 
                 {
                     if (at.user == null)
                         at.user = user;
