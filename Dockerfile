@@ -7,6 +7,7 @@ RUN dotnet restore
 
 # Copy everything else and build
 COPY . ./
+COPY CleaningRules.json ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
