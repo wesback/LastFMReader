@@ -43,7 +43,7 @@ namespace LastFM.ReaderCore
                 //for (int i = 1; i < totalPages+1; i++)
                 Parallel.For(1, 
                              totalPages, 
-                             new ParallelOptions { MaxDegreeOfParallelism = 4}, 
+                             new ParallelOptions { MaxDegreeOfParallelism = 2}, 
                              (i)  => 
                                   {
                                       var records = LastFMRunTime.getLastFMRecordsByPage(user, pageSize, i);
@@ -55,7 +55,7 @@ namespace LastFM.ReaderCore
                 //Add username to every row
                 //allTracks.ForEach(at =>
                 Parallel.ForEach(allTracks, 
-                                 new ParallelOptions { MaxDegreeOfParallelism = 4}, 
+                                 new ParallelOptions { MaxDegreeOfParallelism = 2}, 
                                 (at)  => 
                                       {
                                         if (at.user == null)
