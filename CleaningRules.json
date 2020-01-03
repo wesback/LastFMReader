@@ -1092,6 +1092,12 @@
           "oldValue": "(LP Version)",
           "newValue": "",
           "isRegEx": false
+        },
+        {
+          "sequence": "186",
+          "oldValue": "- Re-recorded",
+          "newValue": "",
+          "isRegEx": false
         }
 
 

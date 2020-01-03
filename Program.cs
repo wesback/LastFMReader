@@ -40,28 +40,34 @@ namespace LastFM.ReaderCore
                 //Show number of pages to process
                 Console.WriteLine(string.Format("Total pages to process: {0}", totalPages.ToString()));
                 
-                for (int i = 1; i < totalPages+1; i++)
-                {
-                    var records = LastFMRunTime.getLastFMRecordsByPage(user, pageSize, i);
-                    allTracks.AddRange(records);
-                    Console.WriteLine(string.Format("Page {0} of {1} processed", i.ToString(), totalPages.ToString()));
-                }
-                
+                //for (int i = 1; i < totalPages+1; i++)
+                Parallel.For(1, 
+                             totalPages, 
+                             new ParallelOptions { MaxDegreeOfParallelism = 4}, 
+                             (i)  => 
+                                  {
+                                      var records = LastFMRunTime.getLastFMRecordsByPage(user, pageSize, i);
+                                      allTracks.AddRange(records);
+                                      Console.WriteLine(string.Format("Page {0} of {1} processed", i.ToString(), totalPages.ToString()));
+                                  }
+                );
+                    
                 //Add username to every row
                 //allTracks.ForEach(at =>
-                Parallel.ForEach(allTracks, new ParallelOptions { MaxDegreeOfParallelism = 4}, (at)  => 
-                {
-                    if (at.user == null)
-                        at.user = user;
-                    
-                    at.artist.name = getArtistCorrection(at.artist.name);
-                    //Check genre for artist and add to output
-                    at.genre = getArtistTag(at.artist.name);
+                Parallel.ForEach(allTracks, 
+                                 new ParallelOptions { MaxDegreeOfParallelism = 4}, 
+                                (at)  => 
+                                      {
+                                        if (at.user == null)
+                                            at.user = user;
+                                        
+                                        at.artist.name = getArtistCorrection(at.artist.name);
+                                        //Check genre for artist and add to output
+                                        at.genre = getArtistTag(at.artist.name);
 
-                    //Clean title
-                    at.cleanTitle = LastFMRunTime.cleanseTitle(at.name);
-                    
-                });
+                                        //Clean title
+                                        at.cleanTitle = LastFMRunTime.cleanseTitle(at.name);
+                                      });
                 
                 await LastFMRunTime.WriteToBLOB(allTracks, user);
 
