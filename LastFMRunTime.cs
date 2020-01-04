@@ -105,7 +105,7 @@ namespace LastFM.ReaderCore
             var content = response.Content;
 
             var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistTags>(content);
-            if (deserialized != null && deserialized.Toptags.Tag.Length > 0)
+            if (deserialized != null && deserialized?.Toptags.Tag.Length > 0)
             {
                 return deserialized.Toptags.Tag[0].Name;
             }
@@ -126,7 +126,7 @@ namespace LastFM.ReaderCore
             var content = response.Content;
 
             var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistCorrection>(content);
-            if (deserialized != null && deserialized.Corrections.Correction.Artist.name != null)
+            if (deserialized != null && deserialized?.Corrections.Correction.Artist.name != null)
             {
                 return deserialized.Corrections.Correction.Artist.name;
             }
