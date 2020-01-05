@@ -2,1100 +2,1113 @@
     "rules": {
       "rule": [
         {
-          "sequence": 1,
+          "sequence": "10",
           "oldValue": "\\- \\d\\d\\d\\d Remastered Version",
           "isRegEx": true
         },
         {
-          "sequence": 2,
+          "sequence": "20",
           "oldValue": "\\- \\d\\d\\d\\d - Re-Mastered Digital Version",
           "isRegEx": true
         },
         {
-          "sequence": 3,
+          "sequence": "30",
           "oldValue": "\\d\\d - ",
           "isRegEx": true
         },
         {
-          "sequence": 4,
+          "sequence": "40",
           "oldValue": "\\- \\d\\d\\d\\d Re-Mastered Digital Version",
           "isRegEx": true
         },
         {
-          "sequence": 5,
+          "sequence": "50",
           "oldValue": "\\ \\(\\d\\d\\d\\d Digital Remaster\\)",
           "isRegEx": true
         },
         {
-          "sequence": 6,
+          "sequence": "60",
           "oldValue": "\\- \\d\\d\\d\\d Digital Remaster;\\d\\d\\d\\d - Remaster;",
           "isRegEx": true
         },
         {
-          "sequence": 7,
+          "sequence": "70",
           "oldValue": "\\- \\d\\d\\d\\d Remastered",
           "isRegEx": true
         },
         {
-          "sequence": 8,
+          "sequence": "80",
           "oldValue": "\\- \\d\\d\\d\\d Remaster",
           "isRegEx": true
         },
         {
-          "sequence": 9,
+          "sequence": "90",
           "oldValue": "\\- Remastered \\d\\d\\d\\d",
           "isRegEx": true
         },
         {
-          "sequence": 10,
+          "sequence": "100",
           "oldValue": "\\ \\(\\d\\d\\d\\d Remastered Version\\)",
           "isRegEx": true
         },
         {
-          "sequence": "11",
+          "sequence": "110",
           "oldValue": "\\ \\(\\d\\d\\d\\d Remastered Album Version\\)",
           "isRegEx": true
         },
         {
-          "sequence": "12",
+          "sequence": "120",
           "oldValue": "\\ \\(\\d\\d\\d\\d Remastered LP Version\\)",
           "isRegEx": true
         },
         {
-          "sequence": "13",
+          "sequence": "130",
           "oldValue": "\\ \\(\\d\\d\\d\\d Remastered\\)",
           "isRegEx": true
         },
         {
-          "sequence": "14",
+          "sequence": "140",
           "oldValue": "\\ \\(\\d\\d\\d\\d Version\\)",
           "isRegEx": true
         },
         {
-          "sequence": "15",
+          "sequence": "150",
           "oldValue": "\\- \\d\\d\\d\\d - Remaster",
           "isRegEx": true
         },
         {
-          "sequence": "16",
+          "sequence": "160",
           "oldValue": "\\- \\d\\d\\d\\d - Version",
           "isRegEx": true
         },
         {
-          "sequence": "17",
+          "sequence": "170",
           "oldValue": "\\- \\d\\d\\d\\d Version",
           "isRegEx": true
         },
         {
-          "sequence": "18",
+          "sequence": "180",
           "oldValue": "\\- \\d\\d\\d\\d Digital Remaster",
           "isRegEx": true
         },
         {
-          "sequence": "19",
+          "sequence": "190",
           "oldValue": "\\- \\d\\d\\d\\d Edit",
           "isRegEx": true
         },
         {
-          "sequence": "20",
+          "sequence": "200",
           "oldValue": "\\- \\d\\d\\d\\d - Stereo Album Version",
           "isRegEx": true
         },
         {
-          "sequence": "21",
+          "sequence": "210",
           "oldValue": "\\- New Version \\d\\d\\d\\d",
           "isRegEx": true
         },
         {
-          "sequence": "22",
-          "oldValue": "\\[(?:(?!-).)*",
-          "isRegEx": true
-        },
-        {
-          "sequence": "23",
+          "sequence": "230",
           "oldValue": "\\;\\d\\d\\d\\d Digital Remaster",
           "isRegEx": true
         },
         {
-          "sequence": "24",
+          "sequence": "240",
           "oldValue": "- Remastered Mono Album Version",
           "isRegEx": false
         },
         {
-          "sequence": "24",
-          "oldValue": "- Remastered Mono Album Version",
-          "newValue": "",
-          "isRegEx": false
-        },
-        {
-          "sequence": "25",
+          "sequence": "250",
           "oldValue": "(Stereo LP version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "26",
+          "sequence": "260",
           "oldValue": "- Remastered Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "27",
+          "sequence": "270",
           "oldValue": "- Live at Monterey",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "28",
+          "sequence": "280",
           "oldValue": "- Original Remastered",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "29",
+          "sequence": "290",
           "oldValue": "- Original version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "30",
+          "sequence": "300",
           "oldValue": "- Original Mix",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "31",
+          "sequence": "310",
           "oldValue": "- Remasterd 03 Mix",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "32",
+          "sequence": "320",
           "oldValue": "(Original Mix)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "33",
+          "sequence": "330",
           "oldValue": "- Single Version (Mono)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "34",
+          "sequence": "340",
           "oldValue": "- Original Mix Remastered",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "35",
+          "sequence": "350",
           "oldValue": "- Original Hit Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "36",
+          "sequence": "360",
           "oldValue": "(7\\",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "37",
+          "sequence": "370",
           "oldValue": "- 7\\",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "38",
+          "sequence": "380",
           "oldValue": "(Album Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "39",
+          "sequence": "390",
           "oldValue": "- Album version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "40",
+          "sequence": "400",
           "oldValue": "- Live 1981 \\",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "41",
+          "sequence": "410",
           "oldValue": "(Live)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "42",
+          "sequence": "420",
           "oldValue": "Wiskey",
           "newValue": "Whiskey",
           "isRegEx": false
         },
         {
-          "sequence": "43",
+          "sequence": "430",
           "oldValue": "(Studio Re-recording)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "44",
+          "sequence": "440",
           "oldValue": "[Live at MGM Grand Las Vegas] (Remastered Album Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "45",
+          "sequence": "450",
+          "oldValue": "(Live - San Diego, CA, 11/5/84)",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "451",
           "oldValue": "(Live - San Diego",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "46",
+          "sequence": "461",
           "oldValue": "(Acoustic-Live)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "47",
+          "sequence": "471",
           "oldValue": "- 40th Anniversary Version /",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "48",
+          "sequence": "481",
           "oldValue": "(Dublin Live 2014)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "49",
+          "sequence": "490",
           "oldValue": "(Remastered Album Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "50",
+          "sequence": "500",
           "oldValue": "(2007 Remastered Saturday Night Fever LP Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "51",
+          "sequence": "510",
           "oldValue": "- 2007 Remastered Version Saturday Night Fever",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "52",
+          "sequence": "520",
           "oldValue": ";1997 Remastered Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "53",
+          "sequence": "530",
           "oldValue": "[2008 Remastered Version]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "54",
+          "sequence": "540",
           "oldValue": "- 2003 Stereo Remastered Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "55",
+          "sequence": "550",
           "oldValue": "(2008 Remastered LP Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "56",
+          "sequence": "560",
           "oldValue": "- Single Version 2006 Remastered",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "57",
+          "sequence": "570",
           "oldValue": "(digitally remastered) - Single Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "58",
+          "sequence": "580",
           "oldValue": "(2006 Remastered Album Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "59",
+          "sequence": "590",
           "oldValue": "(Live Bonus Track)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "60",
+          "sequence": "600",
           "oldValue": "[Live]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "61",
+          "sequence": "610",
           "oldValue": "(Remastered Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "62",
+          "sequence": "620",
           "oldValue": "Live version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "63",
+          "sequence": "630",
           "oldValue": "- Live Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "64",
+          "sequence": "640",
           "oldValue": "- Live",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "65",
+          "sequence": "650",
           "oldValue": "- live",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "66",
+          "sequence": "660",
           "oldValue": "- 2011 Remastered Mono",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "67",
+          "sequence": "670",
           "oldValue": "(2008 Remastered LP Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "68",
+          "sequence": "680",
           "oldValue": "(Re-recorded / Remastered)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "69",
+          "sequence": "690",
           "oldValue": "[1966 Live At The Sands Album Version]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "70",
+          "sequence": "7000",
           "oldValue": "(Remastered)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "71",
+          "sequence": "7100",
           "oldValue": "- (Digitally Remastered 2009)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "72",
+          "sequence": "7200",
           "oldValue": "(digitally remastered) - Single Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "73",
+          "sequence": "7300",
           "oldValue": "(Remastered LP Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "74",
+          "sequence": "740",
           "oldValue": "(live)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "75",
+          "sequence": "750",
           "oldValue": "- Radio Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "76",
+          "sequence": "760",
           "oldValue": "[16 Bit Remastered 94] - 16 Bit Remastered 94",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "77",
+          "sequence": "770",
           "oldValue": "(Live Acoustic Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "78",
+          "sequence": "780",
           "oldValue": "[Remastered - Bonus Track]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "79",
+          "sequence": "790",
           "oldValue": "- New Sound Remastered",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "80",
+          "sequence": "800",
           "oldValue": "Single Version 2006 Remastered",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "81",
+          "sequence": "810",
           "oldValue": "- Single Version; 2003 Remastered Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "82",
+          "sequence": "820",
           "oldValue": "(Live 2010)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "83",
+          "sequence": "830",
           "oldValue": "[Remastered - Bonus Track]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "84",
+          "sequence": "840",
           "oldValue": "- Single Version [Remastered - Bonus Track]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "85",
+          "sequence": "850",
           "oldValue": "- Stereo; 2002 Remastered Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "86",
+          "sequence": "860",
           "oldValue": "(Live at the Cannery Ballrom)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "87",
+          "sequence": "870",
           "oldValue": "[Edit] (2011 Remastered Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "88",
+          "sequence": "880",
           "oldValue": "- Digitally Remastered 96",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "89",
+          "sequence": "890",
           "oldValue": "[Live at Budokan]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "90",
+          "sequence": "900",
           "oldValue": "[Live From Le Zenith]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "91",
+          "sequence": "910",
           "oldValue": "- Digitally Remastered 00",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "92",
+          "sequence": "920",
           "oldValue": "[Live From Wembley Stadium]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "93",
+          "sequence": "930",
           "oldValue": "- Mono Version / Remastered 2002",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "94",
+          "sequence": "940",
           "oldValue": "(2008 Remastered Album Edit Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "95",
+          "sequence": "950",
           "oldValue": "- Edit Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "96",
+          "sequence": "960",
           "oldValue": "- Single Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "97",
+          "sequence": "970",
           "oldValue": "- Mono Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "98",
+          "sequence": "980",
           "oldValue": "- Mono",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "99",
+          "sequence": "990",
           "oldValue": "- Mono Single Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "100",
+          "sequence": "1000",
           "oldValue": "- (Original Single Mono Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "101",
+          "sequence": "1010",
           "oldValue": "- Stereo Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "102",
+          "sequence": "1020",
           "oldValue": "- Single Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "103",
+          "sequence": "1030",
           "oldValue": "- New Stereo Mix Advanced Resolution",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "104",
+          "sequence": "1040",
           "oldValue": "- Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "105",
+          "sequence": "1050",
           "oldValue": "- Vocal Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "106",
+          "sequence": "1060",
           "oldValue": "- Remix",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "107",
+          "sequence": "1070",
           "oldValue": "- Original Album Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "108",
+          "sequence": "1080",
           "oldValue": "- Single/LP Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "109",
+          "sequence": "1090",
           "oldValue": "(Original Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "110",
+          "sequence": "1100",
           "oldValue": "- Remastered Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "111",
+          "sequence": "1110",
           "oldValue": "- Radio Edit 2",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "112",
+          "sequence": "1120",
           "oldValue": "- Radio Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "113",
+          "sequence": "1130",
           "oldValue": "- radio edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "114",
+          "sequence": "1140",
           "oldValue": "(Radio Edit)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "115",
+          "sequence": "1150",
           "oldValue": "- Radio Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "116",
+          "sequence": "1160",
           "oldValue": "- 7\\",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "117",
+          "sequence": "1170",
           "oldValue": "- 12\\",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "118",
+          "sequence": "1180",
           "oldValue": "(12'' Mix",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "119",
+          "sequence": "1190",
           "oldValue": "(Heavy Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "120",
+          "sequence": "1200",
           "oldValue": "(Undubbed Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "121",
+          "sequence": "1210",
           "oldValue": "- (Original Single Mono Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "122",
+          "sequence": "1220",
           "oldValue": "- Artificial Stereo Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "123",
+          "sequence": "1230",
           "oldValue": "- MTV Unplugged Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "124",
+          "sequence": "1240",
           "oldValue": "[Mono Version]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "125",
+          "sequence": "1250",
           "oldValue": "- 2nd Studio Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "126",
+          "sequence": "1260",
           "oldValue": "/Soundtrack Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "127",
+          "sequence": "1270",
           "oldValue": "(45 Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "128",
+          "sequence": "1280",
           "oldValue": "- Original Single Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "129",
+          "sequence": "1290",
           "oldValue": "- English Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "130",
+          "sequence": "1300",
           "oldValue": "- LP/Single Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "131",
+          "sequence": "1310",
           "oldValue": "(Single/LP Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "132",
+          "sequence": "1320",
           "oldValue": "(Single Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "133",
+          "sequence": "1330",
           "oldValue": "(Studio Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "134",
+          "sequence": "1340",
           "oldValue": "[Us Version]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "135",
+          "sequence": "1350",
           "oldValue": "- Single Mix / U.S Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "136",
+          "sequence": "1360",
           "oldValue": "('96 Radio Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "137",
+          "sequence": "1370",
           "oldValue": "- Radio Version Bonus Track",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "138",
+          "sequence": "1380",
           "oldValue": "[Extended Version]",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "139",
+          "sequence": "1390",
           "oldValue": "- Extended Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "140",
+          "sequence": "1400",
           "oldValue": "- extended version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "141",
+          "sequence": "1410",
           "oldValue": "(Extended Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "142",
+          "sequence": "1420",
           "oldValue": "- (Album Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "143",
+          "sequence": "1430",
           "oldValue": "(Album Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "144",
+          "sequence": "1440",
           "oldValue": "(Undubbed Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "145",
+          "sequence": "1450",
           "oldValue": "- 1963 Stereo Album Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "146",
+          "sequence": "1460",
           "oldValue": "- Album Version With Introduction",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "147",
+          "sequence": "1470",
           "oldValue": "- Xanadu Soundtrack Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "148",
+          "sequence": "1480",
           "oldValue": "(Solo Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "149",
+          "sequence": "1490",
           "oldValue": "- Long Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "150",
+          "sequence": "1500",
           "oldValue": "- Full Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "151",
+          "sequence": "1510",
           "oldValue": "- Album Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "152",
+          "sequence": "1520",
           "oldValue": "- Original Radio Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "153",
+          "sequence": "1530",
           "oldValue": "- Album Version(Stereo)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "154",
+          "sequence": "1540",
           "oldValue": "- Original Mono Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "155",
+          "sequence": "1550",
           "oldValue": "(long Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "156",
+          "sequence": "1560",
           "oldValue": "- Album Version (Stereo)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "157",
+          "sequence": "1570",
           "oldValue": "(Re-Recorded / Remastered)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "158",
+          "sequence": "1580",
           "oldValue": "(Long Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "159",
+          "sequence": "15900",
           "oldValue": "- Live From The Royal Albert Hall",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "160",
+          "sequence": "1600",
           "oldValue": "- Acoustic Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "161",
+          "sequence": "1610",
           "oldValue": "- Remastered Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "162",
+          "sequence": "1620",
           "oldValue": "(Re-Recorded)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "163",
+          "sequence": "1630",
           "oldValue": "(Re-Recorded Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "164",
+          "sequence": "1640",
           "oldValue": "(Re-recorded Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "165",
+          "sequence": "1650",
           "oldValue": "(7\\",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "166",
+          "sequence": "1660",
           "oldValue": "- Remastered LP Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "167",
+          "sequence": "1670",
           "oldValue": "- Original Stereo Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "168",
+          "sequence": "1680",
           "oldValue": "- Album Version - Remastered",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "169",
+          "sequence": "1690",
           "oldValue": "- Remastered Single Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "170",
+          "sequence": "1700",
           "oldValue": "- Unedited Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "171",
+          "sequence": "1710",
           "oldValue": "- Original Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "172",
+          "sequence": "1720",
           "oldValue": "- Remastered",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "173",
+          "sequence": "1730",
           "oldValue": "(Instrumental Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "174",
+          "sequence": "1740",
           "oldValue": "(Studio Demo Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "175",
+          "sequence": "1750",
           "oldValue": "- Remastered Mono Album Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "176",
+          "sequence": "1760",
           "oldValue": "- Classical Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "177",
+          "sequence": "1770",
           "oldValue": "- Original 88 Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "178",
+          "sequence": "1780",
           "oldValue": "- Original Stereo Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "179",
+          "sequence": "1790",
           "oldValue": "(Live Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "180",
+          "sequence": "1800",
           "oldValue": "- Pop Version",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "181",
+          "sequence": "1810",
           "oldValue": "(WSM Edit)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "182",
+          "sequence": "1820",
           "oldValue": "- WSM Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "183",
+          "sequence": "1830",
           "oldValue": "- Lost Frequencies Radio Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "184",
+          "sequence": "1840",
           "oldValue": "- Original Edit",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "185",
+          "sequence": "1850",
           "oldValue": "(LP Version)",
           "newValue": "",
           "isRegEx": false
         },
         {
-          "sequence": "186",
+          "sequence": "1860",
           "oldValue": "- Re-recorded",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "1870",
+          "oldValue": "- Original recording",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "1880",
+          "oldValue": "Original Stereo Version",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "1890",
+          "oldValue": "- Rehearsal",
           "newValue": "",
           "isRegEx": false
         }

@@ -22,8 +22,7 @@ namespace LastFM.ReaderCore
 
             int pageSize = 200;
             int page = 1;
-            int currentlyPlaying = -1;
-            
+
             try
             {
                 var user = LastFMConfig.getConfig("lastfmuser");
@@ -33,7 +32,7 @@ namespace LastFM.ReaderCore
                 var allTracks = new List<Track>();
 
                 #if DEBUG
-                    int totalPages = 3;
+                    int totalPages = 27;
                 #else
                     //Calls the API and gets the number of pages to grab
                     int totalPages = LastFMRunTime.getLastFMPages(user, pageSize, page);
@@ -41,7 +40,7 @@ namespace LastFM.ReaderCore
                 //Show number of pages to process
                 Console.WriteLine(string.Format("Total pages to process: {0}", totalPages.ToString()));
                 
-                for (int i = 1; i < totalPages+1; i++)
+                for (int i = 25; i < totalPages+1; i++)
                 {
                     var records = LastFMRunTime.getLastFMRecordsByPage(user, pageSize, i);
                     allTracks.AddRange(records);
@@ -58,9 +57,6 @@ namespace LastFM.ReaderCore
 
                         if (at.user == null)
                             at.user = user;
-                        
-                        if (at.date == null)
-                            currentlyPlaying = trackProcessed;    
 
                         //Get correct writing for artistname      
                         at.artist.name = getArtistCorrection(at.artist.name);
@@ -74,9 +70,6 @@ namespace LastFM.ReaderCore
                         trackProcessed++;
                         Console.Write("\rProcessed {0} of {1}", trackProcessed, totalTracks);
                     });
-
-                if (currentlyPlaying > -1)
-                    allTracks.RemoveAt(currentlyPlaying);
 
                 await LastFMRunTime.WriteToBLOB(allTracks, user);
 

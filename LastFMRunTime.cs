@@ -94,6 +94,7 @@ namespace LastFM.ReaderCore
         {
             var client = new RestClient("http://ws.audioscrobbler.com/2.0/");
             var request = new RestRequest("", Method.POST);
+            var returnTag = "";
 
             request.AddQueryParameter("method", "artist.gettoptags");
             request.AddQueryParameter("api_key", lastFMKey);
@@ -102,19 +103,25 @@ namespace LastFM.ReaderCore
 
 
             var response = client.Execute(request);
-            var content = response.Content;
-
-            var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistTags>(content);
-            if (deserialized != null && deserialized?.Toptags.Tag.Length > 0)
+            
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return deserialized.Toptags.Tag[0].Name;
+                var content = response.Content;
+
+                var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistTags>(content);
+                if (deserialized != null && deserialized?.Toptags.Tag.Length > 0)
+                {
+                    returnTag = deserialized.Toptags.Tag[0].Name;
+                }
             }
-            else return "";
+            
+            return returnTag;
         }
         public static string getLastFMArtistCorrection(string artist)
         {
             var client = new RestClient("http://ws.audioscrobbler.com/2.0/");
             var request = new RestRequest("", Method.POST);
+            var returnArtist = artist;
 
             request.AddQueryParameter("method", "artist.getcorrection");
             request.AddQueryParameter("api_key", lastFMKey);
@@ -123,16 +130,19 @@ namespace LastFM.ReaderCore
 
 
             var response = client.Execute(request);
-            var content = response.Content;
 
-            var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistCorrection>(content);
-            if (deserialized != null && deserialized?.Corrections.Correction.Artist.name != null)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return deserialized.Corrections.Correction.Artist.name;
+                var content = response.Content;
+                var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistCorrection>(content);
+                if (deserialized != null && deserialized?.Corrections.Correction.Artist.name != null)
+                {
+                    returnArtist = deserialized.Corrections.Correction.Artist.name;
+                }
             }
-            else return artist;
-        }
 
+            return returnArtist;
+        }
         public static string cleanseTitle(string title)
         {
             string cleanTitle = title;
@@ -150,12 +160,7 @@ namespace LastFM.ReaderCore
             }
 
             return cleanTitle.TrimEnd();
-
-
-
-            
         }
-
         private static string cleanseWithRegEx(string title, string pattern)
         {
             Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
