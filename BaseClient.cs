@@ -14,9 +14,9 @@ namespace LastFM.ReaderCore
         {
             _cache = cache;
             _errorLogger = errorLogger;
-            AddHandler("application/json", serializer);
-            AddHandler("text/json", serializer);
-            AddHandler("text/x-json", serializer);
+            AddHandler("application/json", () => { return serializer; });
+            AddHandler("text/json", () => { return serializer; });
+            AddHandler("text/x-json", () => { return serializer; });
             BaseUrl = new Uri(baseUrl);
         }
 
