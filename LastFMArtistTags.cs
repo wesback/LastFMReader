@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace LastFM.ReaderCore
 {
-    public partial class LastFMArtistTags
+    public partial class LastFMArtistTag
     {
         [JsonProperty("toptags")]
         public Toptags Toptags { get; set; }

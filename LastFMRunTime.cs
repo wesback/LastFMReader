@@ -108,7 +108,7 @@ namespace LastFM.ReaderCore
             {
                 var content = response.Content;
 
-                var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistTags>(content);
+                var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistTag>(content);
                 if (deserialized != null && deserialized?.Toptags.Tag.Length > 0)
                 {
                     returnTag = deserialized.Toptags.Tag[0].Name;
