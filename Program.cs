@@ -23,6 +23,7 @@ namespace LastFM.ReaderCore
             int page = 1;
             string lastFMKey = LastFMConfig.getConfig("lastfmkey");
 
+            // Setup base objects
             InMemoryCache cache = new InMemoryCache();
             JsonSerializer jsonSerializer = new JsonSerializer();
             ErrorLogger errorLogger = new ErrorLogger();
@@ -30,6 +31,7 @@ namespace LastFM.ReaderCore
             LastFMClient lastFMClient = new LastFMClient(cache, jsonSerializer, errorLogger);
             lastFMClient.apiKey = lastFMKey;
 
+            //Start processing LastFM data
             try
             {
                 var user = LastFMConfig.getConfig("lastfmuser");
@@ -57,12 +59,12 @@ namespace LastFM.ReaderCore
                 //Start corrections and add username    
                 int trackProcessed = 0;
                 int totalTracks = allTracks.Count;
-                //Add username to every row
+
+                //Do postprocessing
                 allTracks.ForEach(at =>
                     {
-
-                        if (at.user == null)
-                            at.user = user;
+                        //Set correct user
+                        at.user = user;
 
                         //Get correct writing for artistname 
                         LastFMArtistCorrection ac = lastFMClient.artistCorrection(at.artist.name);

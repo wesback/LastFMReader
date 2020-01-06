@@ -90,59 +90,6 @@ namespace LastFM.ReaderCore
             blobstream.Close();
         }
 
-        public static string getLastFMArtistTag(string artist)
-        {
-            var client = new RestClient("http://ws.audioscrobbler.com/2.0/");
-            var request = new RestRequest("", Method.POST);
-            var returnTag = "";
-
-            request.AddQueryParameter("method", "artist.gettoptags");
-            request.AddQueryParameter("api_key", lastFMKey);
-            request.AddQueryParameter("format", "json");
-            request.AddQueryParameter("artist", artist);
-
-
-            var response = client.Execute(request);
-            
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var content = response.Content;
-
-                var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistTag>(content);
-                if (deserialized != null && deserialized?.Toptags.Tag.Length > 0)
-                {
-                    returnTag = deserialized.Toptags.Tag[0].Name;
-                }
-            }
-            
-            return returnTag;
-        }
-        public static string getLastFMArtistCorrection(string artist)
-        {
-            var client = new RestClient("http://ws.audioscrobbler.com/2.0/");
-            var request = new RestRequest("", Method.POST);
-            var returnArtist = artist;
-
-            request.AddQueryParameter("method", "artist.getcorrection");
-            request.AddQueryParameter("api_key", lastFMKey);
-            request.AddQueryParameter("format", "json");
-            request.AddQueryParameter("artist", artist);
-
-
-            var response = client.Execute(request);
-
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var content = response.Content;
-                var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMArtistCorrection>(content);
-                if (deserialized != null && deserialized?.Corrections.Correction.Artist.name != null)
-                {
-                    returnArtist = deserialized.Corrections.Correction.Artist.name;
-                }
-            }
-
-            return returnArtist;
-        }
         public static string cleanseTitle(string title)
         {
             string cleanTitle = title;
