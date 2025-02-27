@@ -9,7 +9,21 @@ namespace LastFM.ReaderCore
 {
     class Program
     {
-        static TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+        static TextInfo textInfo;
+
+        static Program()
+        {
+            try
+            {
+                textInfo = new CultureInfo("en-US", false).TextInfo;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception during static initialization: {0} - {1}", ex.Message, ex.StackTrace);
+                throw;
+            }
+        }
+
         static async Task Main(string[] args)
         {
             await processStart();
