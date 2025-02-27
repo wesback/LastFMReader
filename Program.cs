@@ -15,7 +15,7 @@ namespace LastFM.ReaderCore
         {
             try
             {
-                textInfo = new CultureInfo("en-US", false).TextInfo;
+                textInfo = CultureInfo.InvariantCulture.TextInfo;
             }
             catch (Exception ex)
             {
