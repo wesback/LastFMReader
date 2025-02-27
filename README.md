@@ -28,5 +28,5 @@ If you want to run this on an Azure Container Instance use the following command
 az login
 az group create -l westeurope -n RGLastFMReader
 
-az container create -g RGLastFMReader --name lastfmreader --image wesback/lastfmreader --cpu 1 --memory 1 --restart-policy Never --location=westeurope -e lastfmkey=<LASTFMKEY> storageaccount=<STORAGEACCOUNT> storagekey=<STORAGEKEY> lastfmuser=<USER>
+az container create -g RGLastFMReader --name lastfmreader --image wesback/lastfmreader --os-type Linux --cpu 1 --memory 1 --restart-policy Never --location=westeurope -e lastfmkey=<LASTFMKEY> storageaccount=<STORAGEACCOUNT> storagekey=<STORAGEKEY> lastfmuser=<USER>
 ```
