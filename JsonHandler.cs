@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
-using RestSharp.Deserializers;
-using RestSharp.Serializers;
 using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
-public class JsonSerializer : ISerializer, IDeserializer
+public class JsonSerializer
 {
     private readonly Newtonsoft.Json.JsonSerializer _serializer;
 
@@ -15,8 +15,8 @@ public class JsonSerializer : ISerializer, IDeserializer
             MissingMemberHandling = MissingMemberHandling.Ignore,
             NullValueHandling = NullValueHandling.Include,
             DefaultValueHandling = DefaultValueHandling.Include,
-            DateFormatHandling=DateFormatHandling.IsoDateFormat,
-            DateTimeZoneHandling=DateTimeZoneHandling.Unspecified
+            DateFormatHandling = DateFormatHandling.IsoDateFormat,
+            DateTimeZoneHandling = DateTimeZoneHandling.Unspecified
         };
     }
 
@@ -48,9 +48,9 @@ public class JsonSerializer : ISerializer, IDeserializer
     public string Namespace { get; set; }
     public string ContentType { get; set; }
 
-    public T Deserialize<T>(RestSharp.IRestResponse response)
+    public async Task<T> Deserialize<T>(HttpResponseMessage response)
     {
-        var content = response.Content;
+        var content = await response.Content.ReadAsStringAsync();
 
         using (var stringReader = new StringReader(content))
         {

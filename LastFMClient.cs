@@ -1,44 +1,42 @@
-using RestSharp;
-using RestSharp.Deserializers;
 using System;
-
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace LastFM.ReaderCore
 {
-    public class LastFMClient : BaseClient 
+    public class LastFMClient : BaseClient, IDisposable
     {
+        private readonly HttpClient _httpClient;
         public string apiKey { get; set; }
 
-        public LastFMClient (ICacheService cache, IDeserializer serializer, IErrorLogger errorLogger)
-            : base(cache, serializer, errorLogger, "http://ws.audioscrobbler.com/2.0/") { }
-
-        public LastFMArtistCorrection artistCorrection(string artist)
+        public LastFMClient(ICacheService cache, IErrorLogger errorLogger)
+            : base(cache, errorLogger, "http://ws.audioscrobbler.com/2.0/")
         {
+            _httpClient = new HttpClient();
+        }
 
-            var request = new RestRequest("", Method.POST);
+        public async Task<LastFMArtistCorrection> ArtistCorrectionAsync(string artist)
+        {
             var prefix = "corr";
+            var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&api_key={apiKey}&format=json&artist={artist}";
 
-            request.AddQueryParameter("method", "artist.getcorrection");
-            request.AddQueryParameter("api_key", apiKey);
-            request.AddQueryParameter("format", "json");
-            request.AddQueryParameter("artist", artist);
+            var response = await _httpClient.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<LastFMArtistCorrection>(response);
+        }
 
-            return GetFromCache<LastFMArtistCorrection>(request, String.Concat(prefix, artist));
-        }    
-
-        public LastFMArtistTag artistTag(string artist)
+        public async Task<LastFMArtistTag> ArtistTagAsync(string artist)
         {
-
-            var request = new RestRequest("", Method.POST);
             var prefix = "tag";
+            var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&api_key={apiKey}&format=json&artist={artist}";
 
-            request.AddQueryParameter("method", "artist.gettoptags");
-            request.AddQueryParameter("api_key", apiKey);
-            request.AddQueryParameter("format", "json");
-            request.AddQueryParameter("artist", artist);
+            var response = await _httpClient.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<LastFMArtistTag>(response);
+        }
 
-
-            return GetFromCache<LastFMArtistTag>(request, String.Concat(prefix, artist));
-        }    
+        public void Dispose()
+        {
+            _httpClient.Dispose();
+        }
     }
 }
