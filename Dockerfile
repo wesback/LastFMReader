@@ -8,7 +8,7 @@ RUN dotnet restore
 # Copy everything else and build
 COPY . ./
 COPY CleaningRules.json ./
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o out LastFM.ReaderCore.csproj
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/runtime:8.0-alpine
