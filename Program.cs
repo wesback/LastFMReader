@@ -45,8 +45,9 @@ namespace LastFM.ReaderCore
                     int totalPages = 1;
                 #else
                     // Calls the API and gets the number of pages to grab
-                    int totalPages = await LastFMRunTime.getLastFMPages(user, pageSize, page, httpClient);
-                #endif    
+                    int totalPages = LastFMRunTime.getLastFMPages(user, pageSize, page);
+                #endif
+  
                 // Show number of pages to process
                 Console.WriteLine(string.Format("Total pages to process: {0}", totalPages.ToString()));
 
