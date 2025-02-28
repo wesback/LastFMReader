@@ -29,16 +29,41 @@ namespace LastFM.ReaderCore
         public static async Task<IEnumerable<Track>> getLastFMRecordsByPage(string userName, int pageSize, int page)
         {
             var url = $"http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user={userName}&api_key={lastFMKey}&format=json&limit={pageSize}&page={page}&extended=1";
-            var response = client.GetAsync(url).Result;
-            response.EnsureSuccessStatusCode();
-            var content = response.Content.ReadAsStringAsync().Result;
+            int retryCount = 0;
+            int maxRetries = 3;
+            int delay = 1000; // Initial delay in milliseconds
 
-            var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMRecord>(content);
-            if (deserialized != null && deserialized.recenttracks != null && deserialized.recenttracks.track != null)
+            while (retryCount < maxRetries)
             {
-                return deserialized.recenttracks.track;
+                try
+                {
+                    var response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMRecord>(content);
+                    if (deserialized != null && deserialized.recenttracks != null && deserialized.recenttracks.track != null)
+                    {
+                        return deserialized.recenttracks.track;
+                    }
+                    else
+                    {
+                        return new List<Track>();
+                    }
+                }
+                catch (HttpRequestException)
+                {
+                    retryCount++;
+                    if (retryCount >= maxRetries)
+                    {
+                        throw;
+                    }
+                    await Task.Delay(delay);
+                    delay *= 2; // Exponential backoff
+                }
             }
-            else return new List<Track>();
+
+            return new List<Track>();
         }
 
         public static int getLastFMPages(string userName, int pageSize, int page)
