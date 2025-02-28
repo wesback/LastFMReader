@@ -7,6 +7,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.Azure.Storage.Auth;
+using System.Text;
 
 namespace LastFM.ReaderCore
 {
@@ -17,6 +18,7 @@ namespace LastFM.ReaderCore
         static string storageKey = LastFMConfig.getConfig("storagekey");
         static CleaningRule cleaningRules;
         private static readonly HttpClient client = new HttpClient();
+        private static Dictionary<string, Regex> regexCache = new Dictionary<string, Regex>();
 
         static LastFMRunTime()
         {
@@ -74,26 +76,38 @@ namespace LastFM.ReaderCore
 
         public static string cleanseTitle(string title)
         {
-            string cleanTitle = title;
+            StringBuilder cleanTitle = new StringBuilder(title);
+            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
 
-            foreach (Rule r in cleaningRules.Rules.Rule)
+            Parallel.ForEach(cleaningRules.Rules.Rule, parallelOptions, (r) =>
             {
                 if (r.IsRegEx)
                 {
-                    cleanTitle = cleanseWithRegEx(cleanTitle, r.OldValue);
+                    lock (regexCache)
+                    {
+                        cleanTitle = new StringBuilder(cleanseWithRegEx(cleanTitle.ToString(), r.OldValue));
+                    }
                 }
                 else
                 {
-                    cleanTitle = cleanTitle.Replace(r.OldValue, r.NewValue);           
+                    lock (cleanTitle)
+                    {
+                        cleanTitle.Replace(r.OldValue, r.NewValue);
+                    }
                 }
-            }
+            });
 
-            return cleanTitle.TrimEnd();
+            return cleanTitle.ToString().TrimEnd();
         }
+
         private static string cleanseWithRegEx(string title, string pattern)
         {
-            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-            return rgx.Replace(title, "");
+            if (!regexCache.ContainsKey(pattern))
+            {
+                regexCache[pattern] = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            }
+
+            return regexCache[pattern].Replace(title, "");
         }
     }
 }
