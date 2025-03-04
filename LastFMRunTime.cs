@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.Azure.Storage.Auth;
 using System.Text;
+using System.Globalization;
 
 namespace LastFM.ReaderCore
 {
@@ -84,10 +85,12 @@ namespace LastFM.ReaderCore
             var containerRef = blobstorageclient.GetContainerReference("lastfmdata");
 
             await containerRef.CreateIfNotExistsAsync();
-            var blobRef = containerRef.GetBlockBlobReference(string.Format("data/{0}.json", username));
+            var blobRef = containerRef.GetBlockBlobReference(string.Format(CultureInfo.InvariantCulture, "data/{0}.json", username));
 
-
-            var allTracksSerialized = JsonConvert.SerializeObject(allTracks);
+            var allTracksSerialized = JsonConvert.SerializeObject(allTracks, new JsonSerializerSettings
+            {
+                Culture = CultureInfo.InvariantCulture
+            });
 
             var blobstream = await blobRef.OpenWriteAsync();
 
