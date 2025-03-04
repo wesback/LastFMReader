@@ -28,7 +28,7 @@ namespace LastFM.ReaderCore
 
         public static async Task<IEnumerable<Track>> getLastFMRecordsByPage(string userName, int pageSize, int page)
         {
-            var url = $"http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user={userName}&api_key={lastFMKey}&format=json&limit={pageSize}&page={page}&extended=1";
+            var url = $"https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user={userName}&api_key={lastFMKey}&format=json&limit={pageSize}&page={page}&extended=1";
             int retryCount = 0;
             int maxRetries = 3;
             int delay = 1000; // Initial delay in milliseconds
@@ -68,7 +68,7 @@ namespace LastFM.ReaderCore
 
         public static int getLastFMPages(string userName, int pageSize, int page)
         {
-            var url = $"http://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user={userName}&api_key={lastFMKey}&format=json&limit={pageSize}&page={page}&extended=1";
+            var url = $"https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user={userName}&api_key={lastFMKey}&format=json&limit={pageSize}&page={page}&extended=1";
             var response = client.GetAsync(url).Result;
             response.EnsureSuccessStatusCode();
             var content = response.Content.ReadAsStringAsync().Result;

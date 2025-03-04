@@ -34,7 +34,6 @@ namespace LastFM.ReaderCore
             Console.WriteLine("Let's get started!");
 
             int pageSize = 200;
-            int page = 1;
             string lastFMKey = LastFMConfig.getConfig("lastfmkey");
 
             // Setup base objects
@@ -49,7 +48,7 @@ namespace LastFM.ReaderCore
             // Start processing LastFM data
             try
             {
-                var user = LastFMConfig.getConfig("lastfmuser");
+                var user = Uri.EscapeDataString(LastFMConfig.getConfig("lastfmuser"));
 
                 Console.WriteLine("Processing for user: " + user);
 
@@ -59,7 +58,7 @@ namespace LastFM.ReaderCore
                     int totalPages = 1;
                 #else
                     // Calls the API and gets the number of pages to grab
-                    int totalPages = LastFMRunTime.getLastFMPages(user, pageSize, page);
+                    int totalPages = LastFMRunTime.getLastFMPages(user, pageSize, 1);
                 #endif
   
                 // Show number of pages to process
@@ -90,6 +89,11 @@ namespace LastFM.ReaderCore
                     // Do postprocessing
                     foreach (var at in allTracks)
                     {
+                        #if DEBUG
+                            // Debug statement to print the current track being processed
+                            Console.WriteLine($"Processing track: {at.name} by {at.artist.name}");
+                        #endif
+                        
                         // Set correct user
                         at.user = user;
 

@@ -11,7 +11,7 @@ namespace LastFM.ReaderCore
         public string apiKey { get; set; }
 
         public LastFMClient(ICacheService cache, IErrorLogger errorLogger)
-            : base(cache, errorLogger, "http://ws.audioscrobbler.com/2.0/")
+            : base(cache, errorLogger, "https://ws.audioscrobbler.com/2.0/")
         {
             _httpClient = new HttpClient();
         }
@@ -30,7 +30,7 @@ namespace LastFM.ReaderCore
             string response = null;
             try
             {
-                var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&api_key={apiKey}&format=json&artist={artist}";
+                var url = $"https://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&api_key={apiKey}&format=json&artist={Uri.EscapeDataString(artist)}";
                 response = await _httpClient.GetStringAsync(url);
                 var result = JsonConvert.DeserializeObject<LastFMArtistCorrection>(response);
 
@@ -59,7 +59,7 @@ namespace LastFM.ReaderCore
             string response = null;
             try
             {
-                var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&api_key={apiKey}&format=json&artist={artist}";
+                var url = $"https://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&api_key={apiKey}&format=json&artist={Uri.EscapeDataString(artist)}";
                 response = await _httpClient.GetStringAsync(url);
                 var result = JsonConvert.DeserializeObject<LastFMArtistTag>(response);
 
