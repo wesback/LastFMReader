@@ -1,9 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build-env
 WORKDIR /app
 
-# Install ICU library
-RUN apk add --no-cache icu-libs
-
 # Copy csproj and restore as distinct layers
 COPY *.csproj ./
 RUN dotnet restore

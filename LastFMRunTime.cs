@@ -78,9 +78,6 @@ namespace LastFM.ReaderCore
 
         public static async Task WriteToBLOB(List<Track> allTracks, string username)
         {
-             // Set the environment variable to disable globalization-invariant mode
-            Environment.SetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_INVARIANT", "false");
-            
             var blobCreds = new StorageCredentials(storageAccount, storageKey);
             var storageUri = new Uri(@"https://" + storageAccount + ".blob.core.windows.net/");
             var blobstorageclient = new Microsoft.Azure.Storage.Blob.CloudBlobClient(storageUri, blobCreds);

@@ -26,6 +26,10 @@ namespace LastFM.ReaderCore
 
         static async Task Main(string[] args)
         {
+             // Set the default culture to InvariantCulture
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            
             await processStart();
         }
 
