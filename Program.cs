@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
+using ShellProgressBar;
 
 namespace LastFM.ReaderCore
 {
@@ -38,12 +38,12 @@ namespace LastFM.ReaderCore
             string lastFMKey = LastFMConfig.getConfig("lastfmkey");
 
             // Setup base objects
-            InMemoryCache cache = new InMemoryCache();
+            ICacheService cacheService = new InMemoryCacheService();
             JsonSerializer jsonSerializer = new JsonSerializer();
             ErrorLogger errorLogger = new ErrorLogger();
 
             using HttpClient httpClient = new HttpClient();
-            LastFMClient lastFMClient = new LastFMClient(cache, errorLogger);
+            LastFMClient lastFMClient = new LastFMClient(cacheService, errorLogger);
             lastFMClient.apiKey = lastFMKey;
 
             // Start processing LastFM data
@@ -76,30 +76,41 @@ namespace LastFM.ReaderCore
                 int trackProcessed = 0;
                 int totalTracks = allTracks.Count;
 
-                // Do postprocessing
-                foreach (var at in allTracks)
+                 // Initialize progress bar
+                var options = new ProgressBarOptions
                 {
-                    // Set correct user
-                    at.user = user;
+                    ForegroundColor = ConsoleColor.Blue,
+                    BackgroundColor = ConsoleColor.DarkBlue,
+                    ProgressCharacter = '─'
+                };
 
-                    // Get correct writing for artistname 
-                    LastFMArtistCorrection ac = await lastFMClient.ArtistCorrectionAsync(at.artist.name);
-                    var correctedArtist = ac.Corrections.Correction.Artist.name;
+                // Do postprocessing
+                using (var pbar = new ProgressBar(totalTracks, "Processing tracks", options))
+                {
+                    // Do postprocessing
+                    foreach (var at in allTracks)
+                    {
+                        // Set correct user
+                        at.user = user;
 
-                    at.artist.name = (correctedArtist == null) ? at.artist.name : correctedArtist;
+                        // Get correct writing for artistname 
+                        LastFMArtistCorrection ac = await lastFMClient.ArtistCorrectionAsync(at.artist.name);
+                        var correctedArtist = ac.Corrections.Correction.Artist.name;
 
-                    // Check genre for artist and add to output
-                    LastFMArtistTag tag = await lastFMClient.ArtistTagAsync(at.artist.name);
-                    var artistTag = (tag.Toptags.Tag.Length > 0) ? tag.Toptags.Tag[0].Name : "";
+                        at.artist.name = (correctedArtist == null) ? at.artist.name : correctedArtist;
 
-                    at.genre = textInfo.ToTitleCase(artistTag);
+                        // Check genre for artist and add to output
+                        LastFMArtistTag tag = await lastFMClient.ArtistTagAsync(at.artist.name);
+                        var artistTag = (tag.Toptags.Tag.Length > 0) ? tag.Toptags.Tag[0].Name : "";
 
-                    // Clean title
-                    at.cleanTitle = LastFMRunTime.cleanseTitle(at.name);
+                        at.genre = textInfo.ToTitleCase(artistTag);
 
-                    trackProcessed++;
+                        // Clean title
+                        at.cleanTitle = LastFMRunTime.cleanseTitle(at.name);
 
-                    // Console.WriteLine("Processed {0} of {1}", trackProcessed, totalTracks);
+                        trackProcessed++;
+                        pbar.Tick(trackProcessed);
+                    }
                 }
 
                 await LastFMRunTime.WriteToBLOB(allTracks, user);

@@ -19,19 +19,39 @@ namespace LastFM.ReaderCore
         public async Task<LastFMArtistCorrection> ArtistCorrectionAsync(string artist)
         {
             var prefix = "corr";
-            var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&api_key={apiKey}&format=json&artist={artist}";
+            var cacheKey = $"{prefix}_{artist}";
+            var cachedData = _cache.Get<LastFMArtistCorrection>(cacheKey);
 
+            if (cachedData != null)
+            {
+                return cachedData;
+            }
+
+            var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&api_key={apiKey}&format=json&artist={artist}";
             var response = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<LastFMArtistCorrection>(response);
+            var result = JsonConvert.DeserializeObject<LastFMArtistCorrection>(response);
+
+            _cache.Set(cacheKey, result);
+            return result;
         }
 
         public async Task<LastFMArtistTag> ArtistTagAsync(string artist)
         {
             var prefix = "tag";
-            var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&api_key={apiKey}&format=json&artist={artist}";
+            var cacheKey = $"{prefix}_{artist}";
+            var cachedData = _cache.Get<LastFMArtistTag>(cacheKey);
 
+            if (cachedData != null)
+            {
+                return cachedData;
+            }
+
+            var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&api_key={apiKey}&format=json&artist={artist}";
             var response = await _httpClient.GetStringAsync(url);
-            return JsonConvert.DeserializeObject<LastFMArtistTag>(response);
+            var result = JsonConvert.DeserializeObject<LastFMArtistTag>(response);
+
+            _cache.Set(cacheKey, result);
+            return result;
         }
 
         public void Dispose()

@@ -1,30 +1,22 @@
-// Borrowed code from https://exceptionnotfound.net/building-the-ultimate-restsharp-client-in-asp-net-and-csharp/
-
-using System;
-using Microsoft.Extensions.Caching.Memory;
+using System.Collections.Generic;
 
 namespace LastFM.ReaderCore
 {
-
-    public interface ICacheService
+    public class InMemoryCacheService : ICacheService
     {
-        T Get<T>(string cacheKey) where T : class;
-        void Set(string cacheKey, object item);
-    }
+        private readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
 
-    public class InMemoryCache : ICacheService
-    {
-        private MemoryCache _memoryCache = new MemoryCache(new MemoryCacheOptions());
-        public T Get<T>(string cacheKey) where T : class
+        public T Get<T>(string key) where T : class
         {
-            return _memoryCache.Get(cacheKey) as T;
-        }
-        public void Set(string cacheKey, object item)
-        {
-            if (item != null)
+            if (_cache.TryGetValue(key, out var value))
             {
-                _memoryCache.Set(cacheKey, item);
+                return (T)value;
             }
+            return default;
+        }
+        public void Set(string key, object value)
+        {
+            _cache[key] = value;
         }
     }
 }
