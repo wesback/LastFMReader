@@ -13,23 +13,11 @@ namespace LastFM.ReaderCore
 
         static Program()
         {
-            try
-            {
-                textInfo = CultureInfo.InvariantCulture.TextInfo;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Exception during static initialization: {0} - {1}", ex.Message, ex.StackTrace);
-                throw;
-            }
+
         }
 
         static async Task Main(string[] args)
         {
-             // Set the default culture to InvariantCulture
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-            
             await processStart();
         }
 

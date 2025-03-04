@@ -1,9 +1,5 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
-
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
-
-RUN apk add --no-cache icu-libs
 
 # Copy csproj and restore as distinct layers
 COPY *.csproj ./
@@ -15,7 +11,7 @@ COPY CleaningRules.json ./
 RUN dotnet publish -c Release -o out LastFM.ReaderCore.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/runtime:8.0-alpine
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 
 COPY --from=build-env /app/out .

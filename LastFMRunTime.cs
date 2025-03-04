@@ -74,12 +74,11 @@ namespace LastFM.ReaderCore
             response.EnsureSuccessStatusCode();
             var content = response.Content.ReadAsStringAsync().Result;
             var des = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMRecord>(content);
-            return int.Parse(des.recenttracks.attr.totalPages, CultureInfo.InvariantCulture);
+            return int.Parse(des.recenttracks.attr.totalPages);
         }
 
         public static async Task WriteToBLOB(List<Track> allTracks, string username)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             try
             {
                 var blobCreds = new StorageCredentials(storageAccount, storageKey);
@@ -88,12 +87,9 @@ namespace LastFM.ReaderCore
                 var containerRef = blobstorageclient.GetContainerReference("lastfmdata");
 
                 await containerRef.CreateIfNotExistsAsync();
-                var blobRef = containerRef.GetBlockBlobReference(string.Format(CultureInfo.InvariantCulture, "data/{0}.json", username));
+                var blobRef = containerRef.GetBlockBlobReference(string.Format("data/{0}.json", username));
 
-                var allTracksSerialized = JsonConvert.SerializeObject(allTracks, new JsonSerializerSettings
-                {
-                    Culture = CultureInfo.InvariantCulture
-                });
+                var allTracksSerialized = JsonConvert.SerializeObject(allTracks, new JsonSerializerSettings());
 
                 var blobstream = await blobRef.OpenWriteAsync();
 
