@@ -1,6 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build-env
 WORKDIR /app
 
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+
+RUN apk add --no-cache icu-libs
+
 # Copy csproj and restore as distinct layers
 COPY *.csproj ./
 RUN dotnet restore
