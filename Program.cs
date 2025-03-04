@@ -108,6 +108,13 @@ namespace LastFM.ReaderCore
                         // Clean title
                         at.cleanTitle = LastFMRunTime.cleanseTitle(at.name);
 
+                        // Convert Unix timestamp to local time and add scrobbletime
+                        if (!string.IsNullOrEmpty(at.date?.uts))
+                        {
+                            var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(at.date.uts));
+                            at.scrobbleTime = dateTimeOffset.LocalDateTime.ToString("o");
+                        }
+
                         trackProcessed++;
                         pbar.Tick(trackProcessed);
                     }

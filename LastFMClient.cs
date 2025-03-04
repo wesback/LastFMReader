@@ -26,13 +26,23 @@ namespace LastFM.ReaderCore
             {
                 return cachedData;
             }
+            
+            string response = null;
+            try
+            {
+                var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&api_key={apiKey}&format=json&artist={artist}";
+                response = await _httpClient.GetStringAsync(url);
+                var result = JsonConvert.DeserializeObject<LastFMArtistCorrection>(response);
 
-            var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.getcorrection&api_key={apiKey}&format=json&artist={artist}";
-            var response = await _httpClient.GetStringAsync(url);
-            var result = JsonConvert.DeserializeObject<LastFMArtistCorrection>(response);
-
-            _cache.Set(cacheKey, result);
-            return result;
+                _cache.Set(cacheKey, result);
+                return result;
+            }
+            catch (JsonSerializationException ex)
+            {
+                Console.WriteLine("Error deserializing JSON response: " + ex.Message);
+                Console.WriteLine("JSON Response: " + response);
+                throw;
+            }
         }
 
         public async Task<LastFMArtistTag> ArtistTagAsync(string artist)
@@ -46,12 +56,22 @@ namespace LastFM.ReaderCore
                 return cachedData;
             }
 
-            var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&api_key={apiKey}&format=json&artist={artist}";
-            var response = await _httpClient.GetStringAsync(url);
-            var result = JsonConvert.DeserializeObject<LastFMArtistTag>(response);
+            string response = null;
+            try
+            {
+                var url = $"http://ws.audioscrobbler.com/2.0/?method=artist.gettoptags&api_key={apiKey}&format=json&artist={artist}";
+                response = await _httpClient.GetStringAsync(url);
+                var result = JsonConvert.DeserializeObject<LastFMArtistTag>(response);
 
-            _cache.Set(cacheKey, result);
-            return result;
+                _cache.Set(cacheKey, result);
+                return result;
+            }
+            catch (JsonSerializationException ex)
+            {
+                Console.WriteLine("Error deserializing JSON response: " + ex.Message);
+                Console.WriteLine("JSON Response: " + response);
+                throw;
+            }
         }
 
         public void Dispose()
