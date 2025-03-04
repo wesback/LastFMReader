@@ -74,32 +74,42 @@ namespace LastFM.ReaderCore
             response.EnsureSuccessStatusCode();
             var content = response.Content.ReadAsStringAsync().Result;
             var des = Newtonsoft.Json.JsonConvert.DeserializeObject<LastFMRecord>(content);
-            return int.Parse(des.recenttracks.attr.totalPages);
+            return int.Parse(des.recenttracks.attr.totalPages, CultureInfo.InvariantCulture);
         }
 
         public static async Task WriteToBLOB(List<Track> allTracks, string username)
         {
-            var blobCreds = new StorageCredentials(storageAccount, storageKey);
-            var storageUri = new Uri(@"https://" + storageAccount + ".blob.core.windows.net/");
-            var blobstorageclient = new Microsoft.Azure.Storage.Blob.CloudBlobClient(storageUri, blobCreds);
-            var containerRef = blobstorageclient.GetContainerReference("lastfmdata");
-
-            await containerRef.CreateIfNotExistsAsync();
-            var blobRef = containerRef.GetBlockBlobReference(string.Format(CultureInfo.InvariantCulture, "data/{0}.json", username));
-
-            var allTracksSerialized = JsonConvert.SerializeObject(allTracks, new JsonSerializerSettings
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            try
             {
-                Culture = CultureInfo.InvariantCulture
-            });
+                var blobCreds = new StorageCredentials(storageAccount, storageKey);
+                var storageUri = new Uri(@"https://" + storageAccount + ".blob.core.windows.net/");
+                var blobstorageclient = new Microsoft.Azure.Storage.Blob.CloudBlobClient(storageUri, blobCreds);
+                var containerRef = blobstorageclient.GetContainerReference("lastfmdata");
 
-            var blobstream = await blobRef.OpenWriteAsync();
+                await containerRef.CreateIfNotExistsAsync();
+                var blobRef = containerRef.GetBlockBlobReference(string.Format(CultureInfo.InvariantCulture, "data/{0}.json", username));
 
-            using (var sw = new StreamWriter(blobstream))
-            {
-                sw.Write(allTracksSerialized);
-                sw.Close();
+                var allTracksSerialized = JsonConvert.SerializeObject(allTracks, new JsonSerializerSettings
+                {
+                    Culture = CultureInfo.InvariantCulture
+                });
+
+                var blobstream = await blobRef.OpenWriteAsync();
+
+                using (var sw = new StreamWriter(blobstream))
+                {
+                    sw.Write(allTracksSerialized);
+                    sw.Close();
+                }
+                blobstream.Close();
             }
-            blobstream.Close();
+            catch (Exception ex)
+            {
+                // Handle the globalization-invariant mode issue.
+                Console.Error.WriteLine("An error occurred: " + ex.Message);
+                throw;
+            }
         }
 
         public static string cleanseTitle(string title)
