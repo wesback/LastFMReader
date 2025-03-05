@@ -9,6 +9,8 @@ using System.Net.Http.Headers;
 using Microsoft.Azure.Storage.Auth;
 using System.Text;
 using System.Globalization;
+using System.Linq;
+using System.Collections.Concurrent;
 
 namespace LastFM.ReaderCore
 {
@@ -19,12 +21,13 @@ namespace LastFM.ReaderCore
         static string storageKey = LastFMConfig.getConfig("storagekey");
         static CleaningRule cleaningRules;
         private static readonly HttpClient client = new HttpClient();
-        private static Dictionary<string, Regex> regexCache = new Dictionary<string, Regex>();
+        private static readonly ConcurrentDictionary<string, Regex> regexCache = new();
 
         static LastFMRunTime()
         {
-           var rules = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "CleaningRules.json"));
-           cleaningRules = JsonConvert.DeserializeObject<CleaningRule>(rules);
+            var rulesPath = Path.Combine(Directory.GetCurrentDirectory(), "CleaningRules.json");
+            var rulesJson = File.ReadAllText(rulesPath);
+            cleaningRules = JsonConvert.DeserializeObject<CleaningRule>(rulesJson);
         }
 
         public static async Task<IEnumerable<Track>> getLastFMRecordsByPage(string userName, int pageSize, int page)
@@ -107,41 +110,30 @@ namespace LastFM.ReaderCore
                 throw;
             }
         }
-
-        public static string cleanseTitle(string title)
+        public static string CleanseTitle(string title)
         {
-            StringBuilder cleanTitle = new StringBuilder(title);
-            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount };
+            if (string.IsNullOrWhiteSpace(title) || cleaningRules?.Rules?.Rule == null)
+                return title;
 
-            Parallel.ForEach(cleaningRules.Rules.Rule, parallelOptions, (r) =>
+            string cleanTitle = title;
+
+            // Sort rules by sequence once
+            foreach (var rule in cleaningRules.Rules.Rule.OrderBy(r => r.Sequence))
             {
-                if (r.IsRegEx)
+                if (rule.IsRegEx)
                 {
-                    lock (regexCache)
-                    {
-                        cleanTitle = new StringBuilder(cleanseWithRegEx(cleanTitle.ToString(), r.OldValue));
-                    }
+                    var regex = regexCache.GetOrAdd(rule.OldValue,
+                        key => new Regex(key, RegexOptions.IgnoreCase | RegexOptions.Compiled));
+
+                    cleanTitle = regex.Replace(cleanTitle, rule.NewValue ?? "");
                 }
                 else
                 {
-                    lock (cleanTitle)
-                    {
-                        cleanTitle.Replace(r.OldValue, r.NewValue);
-                    }
+                    cleanTitle = cleanTitle.Replace(rule.OldValue, rule.NewValue ?? "");
                 }
-            });
-
-            return cleanTitle.ToString().TrimEnd();
-        }
-
-        private static string cleanseWithRegEx(string title, string pattern)
-        {
-            if (!regexCache.ContainsKey(pattern))
-            {
-                regexCache[pattern] = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
             }
 
-            return regexCache[pattern].Replace(title, "");
+            return cleanTitle.Trim();
         }
     }
 }

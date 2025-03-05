@@ -1123,6 +1123,30 @@
           "oldValue": "- From \"Young Guns II\" Soundtrack",
           "newValue": "",
           "isRegEx": false
+        },
+        {
+          "sequence": "1920",
+          "oldValue": "- From \"An Officer And A Gentleman\"",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "1930",
+          "oldValue": "(Original)",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "1940",
+          "oldValue": "at The Royal Albert Hall, Orchestral Version",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "1950",
+          "oldValue": "Mrs. Robinson - From \"The Graduate\" Soundtrack",
+          "newValue": "",
+          "isRegEx": false
         }
       ]
     }
