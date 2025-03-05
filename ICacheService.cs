@@ -1,9 +1,7 @@
-namespace LastFM.ReaderCore
+public interface ICacheService
 {
-
-    public interface ICacheService
-    {
-        T Get<T>(string cacheKey) where T : class;
-        void Set(string cacheKey, object item);
-    }
+    void Set(string key, object value);
+    object Get(string key);
+    T Get<T>(string key); // Ensure no constraints are applied here unless necessary
+    bool Contains(string key);
 }

@@ -13,7 +13,6 @@
     <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.2.3" />
     <None Update="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
     <None Update="appsettings.debug.json" CopyToOutputDirectory="PreserveNewest" />
-    <PackageReference Include="ShellProgressBar" Version="5.2.0" />
   </ItemGroup>
 
 </Project>

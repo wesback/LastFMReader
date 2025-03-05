@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ShellProgressBar;
 
 namespace LastFM.ReaderCore
 {
@@ -76,54 +76,43 @@ namespace LastFM.ReaderCore
                 int trackProcessed = 0;
                 int totalTracks = allTracks.Count;
 
-                 // Initialize progress bar
-                var options = new ProgressBarOptions
-                {
-                    ForegroundColor = ConsoleColor.Blue,
-                    BackgroundColor = ConsoleColor.DarkBlue,
-                    ProgressCharacter = '─'
-                };
-
                 // Do postprocessing
-                using (var pbar = new ProgressBar(totalTracks, "Processing tracks", options))
+                var tasks = allTracks.Select(async at =>
                 {
-                    // Do postprocessing
-                    foreach (var at in allTracks)
+                    #if DEBUG
+                        // Debug statement to print the current track being processed
+                        Console.WriteLine($"Processing track: {at.name} by {at.artist.name}");
+                    #endif
+
+                    // Set correct user
+                    at.user = user;
+
+                    // Get correct writing for artistname 
+                    LastFMArtistCorrection ac = await lastFMClient.ArtistCorrectionAsync(at.artist.name);
+                    var correctedArtist = ac.Corrections.Correction.Artist.name;
+
+                    at.artist.name = (correctedArtist == null) ? at.artist.name : correctedArtist;
+
+                    // Check genre for artist and add to output
+                    LastFMArtistTag tag = await lastFMClient.ArtistTagAsync(at.artist.name);
+                    var artistTag = (tag.Toptags.Tag.Length > 0) ? tag.Toptags.Tag[0].Name : "";
+
+                    at.genre = textInfo.ToTitleCase(artistTag);
+
+                    // Clean title
+                    at.cleanTitle = textInfo.ToTitleCase(LastFMRunTime.CleanseTitle(at.name));
+
+                    // Convert Unix timestamp to local time and add scrobbletime
+                    if (!string.IsNullOrEmpty(at.date?.uts))
                     {
-                        #if DEBUG
-                            // Debug statement to print the current track being processed
-                            Console.WriteLine($"Processing track: {at.name} by {at.artist.name}");
-                        #endif
-                        
-                        // Set correct user
-                        at.user = user;
-
-                        // Get correct writing for artistname 
-                        LastFMArtistCorrection ac = await lastFMClient.ArtistCorrectionAsync(at.artist.name);
-                        var correctedArtist = ac.Corrections.Correction.Artist.name;
-
-                        at.artist.name = (correctedArtist == null) ? at.artist.name : correctedArtist;
-
-                        // Check genre for artist and add to output
-                        LastFMArtistTag tag = await lastFMClient.ArtistTagAsync(at.artist.name);
-                        var artistTag = (tag.Toptags.Tag.Length > 0) ? tag.Toptags.Tag[0].Name : "";
-
-                        at.genre = textInfo.ToTitleCase(artistTag);
-
-                        // Clean title
-                        at.cleanTitle = textInfo.ToTitleCase(LastFMRunTime.CleanseTitle(at.name));
-
-                        // Convert Unix timestamp to local time and add scrobbletime
-                        if (!string.IsNullOrEmpty(at.date?.uts))
-                        {
-                            var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(at.date.uts));
-                            at.scrobbleTime = dateTimeOffset.LocalDateTime.ToString("o");
-                        }
-
-                        trackProcessed++;
-                        pbar.Tick(trackProcessed);
+                        var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(at.date.uts));
+                        at.scrobbleTime = dateTimeOffset.LocalDateTime.ToString("o");
                     }
-                }
+
+                    trackProcessed++;
+                });
+
+                await Task.WhenAll(tasks);
 
                 await LastFMRunTime.WriteToBLOB(allTracks, user);
 
