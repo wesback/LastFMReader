@@ -111,7 +111,7 @@ namespace LastFM.ReaderCore
                         at.genre = textInfo.ToTitleCase(artistTag);
 
                         // Clean title
-                        at.cleanTitle = LastFMRunTime.cleanseTitle(at.name);
+                        at.cleanTitle = textInfo.ToTitleCase(LastFMRunTime.cleanseTitle(at.name));
 
                         // Convert Unix timestamp to local time and add scrobbletime
                         if (!string.IsNullOrEmpty(at.date?.uts))

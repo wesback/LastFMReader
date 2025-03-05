@@ -10,6 +10,13 @@
                 "${workspaceFolder}/LastFM.ReaderCore.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "type": "dotnet",
+            "task": "build",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "dotnet: build"
         }
     ]
 }

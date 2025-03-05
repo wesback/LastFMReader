@@ -1111,9 +1111,19 @@
           "oldValue": "- Rehearsal",
           "newValue": "",
           "isRegEx": false
+        },
+        {
+          "sequence": "1900",
+          "oldValue": "- Remaster",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "1910",
+          "oldValue": "- From \"Young Guns II\" Soundtrack",
+          "newValue": "",
+          "isRegEx": false
         }
-
-
       ]
     }
   }
