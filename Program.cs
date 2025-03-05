@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -61,7 +60,7 @@ namespace LastFM.ReaderCore
                     // Calls the API and gets the number of pages to grab
                     int totalPages = LastFMRunTime.getLastFMPages(user, pageSize, 1);
                 #endif
-  
+
                 // Show number of pages to process
                 Console.WriteLine(string.Format("Total pages to process: {0}", totalPages.ToString()));
 
@@ -77,7 +76,7 @@ namespace LastFM.ReaderCore
                 int totalTracks = allTracks.Count;
 
                 // Do postprocessing
-                var tasks = allTracks.Select(async at =>
+                foreach (var at in allTracks)
                 {
                     #if DEBUG
                         // Debug statement to print the current track being processed
@@ -110,9 +109,7 @@ namespace LastFM.ReaderCore
                     }
 
                     trackProcessed++;
-                });
-
-                await Task.WhenAll(tasks);
+                }
 
                 await LastFMRunTime.WriteToBLOB(allTracks, user);
 
