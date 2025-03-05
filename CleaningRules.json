@@ -1161,16 +1161,19 @@
         {
           "sequence": "1980",
           "oldValue": "- Single Edit",
+          "newValue": "",
           "isRegEx": false
         },
         {
           "sequence": "1990",
           "oldValue": "- Remix",
+          "newValue": "",
           "isRegEx": false
         },
         {
           "sequence": "2000",
           "oldValue": "- Extended",
+          "newValue": "",
           "isRegEx": false
         },
         {
@@ -1186,16 +1189,77 @@
         {
           "sequence": "2030",
           "oldValue": "- Re-recorded",
+          "newValue": "",
           "isRegEx": false
         },
         {
           "sequence": "2040",
           "oldValue": "- MTV Unplugged",
+          "newValue": "",
           "isRegEx": false
         },
         {
           "sequence": "2050",
           "oldValue": "- Acoustic Version",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2060",
+          "oldValue": "(with J.J. Cale) at Ipayone Center, San Diego, CA, 3/15/2007",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2070",
+          "oldValue": "- From \"Top Gun\" Original Soundtrack",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2080",
+          "oldValue": "\\(\\d{4} Stereo Remaster\\)",
+          "isRegEx": true
+        },
+        {
+          "sequence": "2090",
+          "oldValue": "\\(\\d{4} remaster\\)",
+          "isRegEx": true
+        },
+        {
+          "sequence": "2100",
+          "oldValue": "- with The Royal Philharmonic Orchestra",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2110",
+          "oldValue": "at Nippon Budokan, Tokyo, JPN - April 1978",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2120",
+          "oldValue": "In Europe / September 4-28th, 1971",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2130",
+          "oldValue": "- Acoustic Live",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2140",
+          "oldValue": "- with Brothers Osborne",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2150",
+          "oldValue": "(feat. Van Morrison)",
+          "newValue": "",
           "isRegEx": false
         }
       ]
