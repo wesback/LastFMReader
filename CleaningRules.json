@@ -1147,6 +1147,56 @@
           "oldValue": "Mrs. Robinson - From \"The Graduate\" Soundtrack",
           "newValue": "",
           "isRegEx": false
+        },
+        {
+          "sequence": "1960",
+          "oldValue": "- Live at [^,]+",
+          "isRegEx": true
+        },
+        {
+          "sequence": "1970",
+          "oldValue": "- Remastered \\d{4}",
+          "isRegEx": true
+        },
+        {
+          "sequence": "1980",
+          "oldValue": "- Single Edit",
+          "isRegEx": false
+        },
+        {
+          "sequence": "1990",
+          "oldValue": "- Remix",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2000",
+          "oldValue": "- Extended",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2010",
+          "oldValue": "- From \\\"[^\\\"]+\\\"",
+          "isRegEx": true
+        },
+        {
+          "sequence": "2020",
+          "oldValue": "- Live at The [^,]+",
+          "isRegEx": true
+        },
+        {
+          "sequence": "2030",
+          "oldValue": "- Re-recorded",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2040",
+          "oldValue": "- MTV Unplugged",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2050",
+          "oldValue": "- Acoustic Version",
+          "isRegEx": false
         }
       ]
     }
