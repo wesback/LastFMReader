@@ -6,7 +6,6 @@ using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure.Storage.Auth;
 using Newtonsoft.Json;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 
 namespace LastFM.ReaderCore
@@ -52,7 +51,7 @@ namespace LastFM.ReaderCore
         {
             try
             {
-                var blobName = $"data/{_username}/tracks.json.gz";
+                var blobName = $"{_username}_tracks.json";
                 var blobRef = _container.GetBlockBlobReference(blobName);
 
                 // Sort tracks by scrobble time, handling null values
@@ -67,19 +66,18 @@ namespace LastFM.ReaderCore
                     return;
                 }
 
-                // Compress and serialize the data
+                // Serialize the data
                 var jsonData = JsonConvert.SerializeObject(sortedTracks, new JsonSerializerSettings 
                 { 
                     Formatting = Formatting.Indented,
                     NullValueHandling = NullValueHandling.Ignore,
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
-                var compressedData = CompressString(jsonData);
                 
                 await _retryPolicy.ExecuteWithRetryAsync(
                     async () => 
                     {
-                        await blobRef.UploadFromStreamAsync(new MemoryStream(compressedData));
+                        await blobRef.UploadTextAsync(jsonData);
                         return true;
                     },
                     "Upload final tracks file"
@@ -91,20 +89,6 @@ namespace LastFM.ReaderCore
             {
                 _errorLogger?.LogError(ex, $"Error uploading final tracks file for user {_username}");
                 throw;
-            }
-        }
-
-        private byte[] CompressString(string input)
-        {
-            var bytes = System.Text.Encoding.UTF8.GetBytes(input);
-            using (var msi = new MemoryStream(bytes))
-            using (var mso = new MemoryStream())
-            {
-                using (var gs = new GZipStream(mso, CompressionMode.Compress))
-                {
-                    msi.CopyTo(gs);
-                }
-                return mso.ToArray();
             }
         }
 
