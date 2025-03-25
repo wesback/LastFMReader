@@ -9,16 +9,25 @@ namespace LastFM.ReaderCore
 {
     public class BaseClient
     {
-        private readonly HttpClient _httpClient;
-        protected ICacheService _cache;
-        protected IErrorLogger _errorLogger;
+        private static readonly Lazy<HttpClient> _httpClient = new Lazy<HttpClient>(() =>
+        {
+            var client = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(30),
+                MaxResponseContentBufferSize = 1024 * 1024 // 1MB
+            };
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
+        });
+
+        protected readonly ICacheService _cache;
+        protected readonly IErrorLogger _errorLogger;
 
         public BaseClient(ICacheService cache, IErrorLogger errorLogger, string baseUrl)
         {
             _cache = cache;
             _errorLogger = errorLogger;
-            _httpClient = new HttpClient { BaseAddress = new Uri(baseUrl) };
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.Value.BaseAddress = new Uri(baseUrl);
         }
 
         private void LogError(Uri baseUrl, HttpRequestMessage request, HttpResponseMessage response)
@@ -41,13 +50,13 @@ namespace LastFM.ReaderCore
         {
             if (!response.IsSuccessStatusCode)
             {
-                LogError(_httpClient.BaseAddress, request, response);
+                LogError(_httpClient.Value.BaseAddress, request, response);
             }
         }
 
         public async Task<HttpResponseMessage> ExecuteAsync(HttpRequestMessage request)
         {
-            var response = await _httpClient.SendAsync(request);
+            var response = await _httpClient.Value.SendAsync(request);
             TimeoutCheck(request, response);
             return response;
         }
@@ -62,7 +71,7 @@ namespace LastFM.ReaderCore
             }
             else
             {
-                LogError(_httpClient.BaseAddress, request, response);
+                LogError(_httpClient.Value.BaseAddress, request, response);
                 return default(T);
             }
         }
@@ -81,7 +90,7 @@ namespace LastFM.ReaderCore
                 }
                 else
                 {
-                    LogError(_httpClient.BaseAddress, request, response);
+                    LogError(_httpClient.Value.BaseAddress, request, response);
                     return default(T);
                 }
             }

@@ -12,7 +12,14 @@ namespace LastFM.ReaderCore
     {
         public void LogError(Exception ex, string infoMessage)
         {
-            Console.WriteLine ("Exception: {0} - Info: {1}", ex.Message.ToString(), infoMessage);
+            if (ex != null)
+            {
+                Console.WriteLine("Exception: {0} - Info: {1}", ex.Message, infoMessage);
+            }
+            else
+            {
+                Console.WriteLine("Info: {0}", infoMessage);
+            }
         }
     }
 }

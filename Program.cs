@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
+using LastFM.ReaderCore.Logging;
 
 namespace LastFM.ReaderCore
 {
     class Program
     {
         static TextInfo textInfo;
+        private static ILogger _logger;
 
         static Program()
         {
@@ -16,6 +19,12 @@ namespace LastFM.ReaderCore
             {
                 CultureInfo cultureInfo = new CultureInfo("en-US");
                 textInfo = cultureInfo.TextInfo;
+                
+                #if DEBUG
+                    _logger = new StructuredLogger("logs/app.log", LogLevel.Debug);
+                #else
+                    _logger = new StructuredLogger("logs/app.log", LogLevel.Information);
+                #endif
             }
             catch (Exception ex)
             {
@@ -26,18 +35,28 @@ namespace LastFM.ReaderCore
 
         static async Task Main(string[] args)
         {
-            await processStart();
+            try
+            {
+                await processStart();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical("Application failed to complete successfully", ex);
+                throw;
+            }
         }
 
         static async Task processStart()
         {
-            Console.WriteLine("Let's get started!");
+            _logger.LogInformation("Starting LastFM data processing");
 
             int pageSize = 200;
             string lastFMKey = LastFMConfig.getConfig("lastfmkey");
+            string storageAccount = LastFMConfig.getConfig("storageaccount");
+            string storageKey = LastFMConfig.getConfig("storagekey");
 
             // Setup base objects
-            ICacheService cacheService = new InMemoryCacheService();
+            ICacheService cacheService = new InMemoryCacheService(maxCacheSizeMB: 500, defaultExpiration: TimeSpan.FromHours(24));
             JsonSerializer jsonSerializer = new JsonSerializer();
             ErrorLogger errorLogger = new ErrorLogger();
 
@@ -49,75 +68,125 @@ namespace LastFM.ReaderCore
             try
             {
                 var user = Uri.EscapeDataString(LastFMConfig.getConfig("lastfmuser"));
+                _logger.LogInformation($"Processing data for user: {user}");
 
-                Console.WriteLine("Processing for user: " + user);
-
-                var allTracks = new List<Track>();
+                using var batchProcessor = new BatchProcessor(storageAccount, storageKey, user, errorLogger: errorLogger);
+                await batchProcessor.InitializeAsync();
 
                 #if DEBUG
                     int totalPages = 1;
                 #else
-                    // Calls the API and gets the number of pages to grab
                     int totalPages = LastFMRunTime.getLastFMPages(user, pageSize, 1);
                 #endif
 
-                // Show number of pages to process
-                Console.WriteLine(string.Format("Total pages to process: {0}", totalPages.ToString()));
+                _logger.LogInformation($"Total pages to process: {totalPages}");
+                Console.WriteLine($"Starting to process {totalPages} pages...");
+
+                var currentBatch = new List<Track>();
+                int processedTracks = 0;
+                var startTime = DateTime.UtcNow;
+                var lastProgressUpdate = DateTime.UtcNow;
 
                 for (int i = 1; i < totalPages + 1; i++)
                 {
+                    _logger.LogDebug($"Processing page {i} of {totalPages}");
+                    
                     var records = await LastFMRunTime.getLastFMRecordsByPage(user, pageSize, i);
-                    allTracks.AddRange(records);
-                    Console.WriteLine(string.Format("Page {0} of {1} processed", i.ToString(), totalPages.ToString()));
-                };
-
-                // Start corrections and add username    
-                int trackProcessed = 0;
-                int totalTracks = allTracks.Count;
-
-                // Do postprocessing
-                foreach (var at in allTracks)
-                {
-                    #if DEBUG
-                        // Debug statement to print the current track being processed
-                        Console.WriteLine($"Processing track: {at.name} by {at.artist.name}");
-                    #endif
-
-                    // Set correct user
-                    at.user = user;
-
-                    // Get correct writing for artistname 
-                    LastFMArtistCorrection ac = await lastFMClient.ArtistCorrectionAsync(at.artist.name);
-                    var correctedArtist = ac.Corrections.Correction.Artist.name;
-
-                    at.artist.name = (correctedArtist == null) ? at.artist.name : correctedArtist;
-
-                    // Check genre for artist and add to output
-                    LastFMArtistTag tag = await lastFMClient.ArtistTagAsync(at.artist.name);
-                    var artistTag = (tag.Toptags.Tag.Length > 0) ? tag.Toptags.Tag[0].Name : "";
-
-                    at.genre = textInfo.ToTitleCase(artistTag);
-
-                    // Clean title
-                    at.cleanTitle = textInfo.ToTitleCase(LastFMRunTime.CleanseTitle(at.name));
-
-                    // Convert Unix timestamp to local time and add scrobbletime
-                    if (!string.IsNullOrEmpty(at.date?.uts))
+                    
+                    foreach (var track in records)
                     {
-                        var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(at.date.uts));
-                        at.scrobbleTime = dateTimeOffset.LocalDateTime.ToString("o");
+                        try
+                        {
+                            // Set correct user
+                            track.user = user;
+
+                            // Process track sequentially to respect rate limits
+                            var processedTrack = await ProcessTrackAsync(track, lastFMClient, textInfo);
+                            if (processedTrack != null)
+                            {
+                                currentBatch.Add(processedTrack);
+                                processedTracks++;
+
+                                // Update progress every 5 seconds
+                                if (DateTime.UtcNow - lastProgressUpdate >= TimeSpan.FromSeconds(5))
+                                {
+                                    var elapsed = DateTime.UtcNow - startTime;
+                                    var tracksPerSecond = processedTracks / elapsed.TotalSeconds;
+                                    Console.WriteLine($"\rProgress: {processedTracks} tracks processed ({tracksPerSecond:F2} tracks/sec)");
+                                    lastProgressUpdate = DateTime.UtcNow;
+                                }
+
+                                // Process batch when it reaches the size limit
+                                if (currentBatch.Count >= 1000)
+                                {
+                                    await batchProcessor.ProcessBatchAsync(currentBatch);
+                                    currentBatch.Clear();
+                                    _logger.LogInformation($"Processed {processedTracks} tracks so far...");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError($"Error processing track: {track.name} by {track.artist.name}", ex);
+                        }
                     }
 
-                    trackProcessed++;
+                    // Show progress after processing the page
+                    Console.WriteLine($"\rCompleted page {i}/{totalPages} ({processedTracks} tracks processed)...");
+                    _logger.LogInformation($"Completed page {i} of {totalPages}");
                 }
 
-                await LastFMRunTime.WriteToBLOB(allTracks, user);
+                // Process any remaining tracks
+                if (currentBatch.Any())
+                {
+                    await batchProcessor.ProcessBatchAsync(currentBatch);
+                }
 
-                Console.WriteLine("Done");
+                // Finalize and upload all tracks
+                await batchProcessor.FinalizeAsync();
+
+                var totalTime = DateTime.UtcNow - startTime;
+                var completionMessage = $"Completed processing {processedTracks} tracks in {totalTime.TotalMinutes:F2} minutes";
+                _logger.LogInformation(completionMessage);
+                Console.WriteLine($"\n{completionMessage}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception Message: {0} - Exception: {1}", ex.Message, ex.StackTrace);
+                _logger.LogError("Error during data processing", ex);
+                throw;
+            }
+        }
+
+        private static async Task<Track> ProcessTrackAsync(Track track, LastFMClient lastFMClient, TextInfo textInfo)
+        {
+            try
+            {
+                // Get correct writing for artistname 
+                LastFMArtistCorrection ac = await lastFMClient.ArtistCorrectionAsync(track.artist.name);
+                var correctedArtist = ac.Corrections.Correction.Artist.name;
+                track.artist.name = (correctedArtist == null) ? track.artist.name : correctedArtist;
+
+                // Check genre for artist and add to output
+                LastFMArtistTag tag = await lastFMClient.ArtistTagAsync(track.artist.name);
+                var artistTag = (tag.Toptags.Tag.Length > 0) ? tag.Toptags.Tag[0].Name : "";
+                track.genre = textInfo.ToTitleCase(artistTag);
+
+                // Clean title
+                track.cleanTitle = textInfo.ToTitleCase(LastFMRunTime.CleanseTitle(track.name));
+
+                // Convert Unix timestamp to local time and add scrobbletime
+                if (!string.IsNullOrEmpty(track.date?.uts))
+                {
+                    var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(track.date.uts));
+                    track.scrobbleTime = dateTimeOffset.LocalDateTime.ToString("o");
+                }
+
+                return track;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error processing track: {track.name} by {track.artist.name}", ex);
+                return null;
             }
         }
     }
