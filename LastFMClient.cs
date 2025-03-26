@@ -2,6 +2,10 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Text.Json;
+using System.Collections.Generic;
+using System.Threading;
+using LastFM.ReaderCore.Logging;
 
 namespace LastFM.ReaderCore
 {
@@ -10,14 +14,22 @@ namespace LastFM.ReaderCore
         private readonly HttpClient _httpClient;
         private readonly RateLimiter _rateLimiter;
         private readonly RetryPolicy _retryPolicy;
+        private readonly ICacheService _cacheService;
+        private readonly IErrorLogger _errorLogger;
+        private readonly Dictionary<string, string> _genreCache;
+        private readonly SemaphoreSlim _genreCacheLock;
         public string apiKey { get; set; }
 
-        public LastFMClient(ICacheService cache, IErrorLogger errorLogger)
-            : base(cache, errorLogger, "https://ws.audioscrobbler.com/2.0/")
+        public LastFMClient(ICacheService cacheService, IErrorLogger errorLogger)
+            : base(cacheService, errorLogger, "https://ws.audioscrobbler.com/2.0/")
         {
             _httpClient = new HttpClient();
             _rateLimiter = new RateLimiter(3); // 3 requests per second as per LastFM limits
             _retryPolicy = new RetryPolicy(errorLogger: errorLogger);
+            _cacheService = cacheService;
+            _errorLogger = errorLogger;
+            _genreCache = new Dictionary<string, string>();
+            _genreCacheLock = new SemaphoreSlim(1, 1);
         }
 
         public async Task<LastFMArtistCorrection> ArtistCorrectionAsync(string artist)
@@ -70,6 +82,48 @@ namespace LastFM.ReaderCore
                 },
                 $"Artist tags for {artist}"
             );
+        }
+
+        public async Task<string> GetArtistGenreAsync(string artistName)
+        {
+            try
+            {
+                // Check memory cache first
+                await _genreCacheLock.WaitAsync();
+                try
+                {
+                    if (_genreCache.TryGetValue(artistName, out string cachedGenre))
+                    {
+                        return cachedGenre;
+                    }
+                }
+                finally
+                {
+                    _genreCacheLock.Release();
+                }
+
+                // If not in cache, fetch from API
+                var tag = await ArtistTagAsync(artistName);
+                var genre = (tag.Toptags.Tag.Length > 0) ? tag.Toptags.Tag[0].Name : "";
+
+                // Store in memory cache
+                await _genreCacheLock.WaitAsync();
+                try
+                {
+                    _genreCache[artistName] = genre;
+                }
+                finally
+                {
+                    _genreCacheLock.Release();
+                }
+
+                return genre;
+            }
+            catch (Exception ex)
+            {
+                _errorLogger?.LogError(ex, $"Error getting genre for artist: {artistName}");
+                return "";
+            }
         }
 
         public void Dispose()

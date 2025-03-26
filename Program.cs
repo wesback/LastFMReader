@@ -166,9 +166,8 @@ namespace LastFM.ReaderCore
                 var correctedArtist = ac.Corrections.Correction.Artist.name;
                 track.artist.name = (correctedArtist == null) ? track.artist.name : correctedArtist;
 
-                // Check genre for artist and add to output
-                LastFMArtistTag tag = await lastFMClient.ArtistTagAsync(track.artist.name);
-                var artistTag = (tag.Toptags.Tag.Length > 0) ? tag.Toptags.Tag[0].Name : "";
+                // Get genre using cached lookup
+                var artistTag = await lastFMClient.GetArtistGenreAsync(track.artist.name);
                 track.genre = textInfo.ToTitleCase(artistTag);
 
                 // Clean title
