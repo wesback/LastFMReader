@@ -178,7 +178,7 @@ namespace LastFM.ReaderCore
                 if (!string.IsNullOrEmpty(track.date?.uts))
                 {
                     var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(long.Parse(track.date.uts));
-                    track.scrobbleTime = dateTimeOffset.LocalDateTime.ToString("o");
+                    track.scrobbleTime = dateTimeOffset.LocalDateTime.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
                 }
 
                 return track;
