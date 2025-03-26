@@ -346,13 +346,31 @@
         },
         {
           "sequence": "611",
-          "oldValue": " - Live at Montreux Casino, Montreux, Switzerland - July 1982",
+          "oldValue": "- Live at Montreux Casino, Montreux, Switzerland - July 1982",
           "newValue": "",
           "isRegEx": false
         },
         {
           "sequence": "612",
-          "oldValue": " - Live at the Tower Theatre, Philadelphia, PA - December 1992",
+          "oldValue": "- Live at the Tower Theatre, Philadelphia, PA - December 1992",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "613",
+          "oldValue": "(Rerecorded)",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "614",
+          "oldValue": "- Remastered - featured in 'Babygirl'",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "615",
+          "oldValue": "- From \"Top Gun\" Original Soundtrack",
           "newValue": "",
           "isRegEx": false
         },
@@ -975,6 +993,12 @@
           "isRegEx": false
         },
         {
+          "sequence": "1670",
+          "oldValue": "- Original 1997 Version",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
           "sequence": "1680",
           "oldValue": "- Album Version - Remastered",
           "newValue": "",
@@ -1206,12 +1230,6 @@
         },
         {
           "sequence": "2070",
-          "oldValue": "- From \"Top Gun\" Original Soundtrack",
-          "newValue": "",
-          "isRegEx": false
-        },
-        {
-          "sequence": "2080",
           "oldValue": "\\(\\d{4} Stereo Remaster\\)",
           "isRegEx": true
         },
@@ -1258,25 +1276,25 @@
         },
         {
           "sequence": "2160",
-          "oldValue": " ; Single Version",
+          "oldValue": "; Single Version",
           "newValue": "",
           "isRegEx": false
         },
         {
           "sequence": "2170",
-          "oldValue": " - Live at The Woodstock Music & Art Fair, August 18, 1969",
+          "oldValue": "- Live at The Woodstock Music & Art Fair, August 18, 1969",
           "newValue": "",
           "isRegEx": false
         },
         {
           "sequence": "2180",
-          "oldValue": " - Version Revisited",
+          "oldValue": "- Version Revisited",
           "newValue": "",
           "isRegEx": false
         },
         {
           "sequence": "2190",
-          "oldValue": " - From \"Grease\"",
+          "oldValue": "- From \"Grease\"",
           "newValue": "",
           "isRegEx": false
         },
@@ -1295,6 +1313,24 @@
         {
           "sequence": "2220",
           "oldValue": "- Original Stereo Version",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2230",
+          "oldValue": "/ Mono",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2240",
+          "oldValue": "- Downtown Mix / Remastered 2001",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2250",
+          "oldValue": "- Sold Out 7 Inch Mix",
           "newValue": "",
           "isRegEx": false
         }
