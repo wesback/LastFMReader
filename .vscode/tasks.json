@@ -17,6 +17,19 @@
             "group": "build",
             "problemMatcher": [],
             "label": "dotnet: build"
+        },
+        {
+            "label": "build release",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "--configuration",
+                "Release",
+                "${workspaceFolder}/LastFM.ReaderCore.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
         }
     ]
 }

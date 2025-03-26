@@ -44,18 +44,21 @@ namespace LastFM.ReaderCore
             );
         }
 
-        public async Task ProcessBatchAsync(IEnumerable<Track> tracks)
+        public Task ProcessBatchAsync(IEnumerable<Track> tracks)
         {
-            foreach (var track in tracks)
+            return Task.Run(() =>
             {
-                // Create a unique ID for the track using artist, name, and timestamp
-                var trackId = $"{track.artist.name}_{track.name}_{track.date?.uts}";
-                if (!_processedTrackIds.Contains(trackId))
+                foreach (var track in tracks)
                 {
-                    _processedTrackIds.Add(trackId);
-                    _allTracks.Add(track);
+                    // Create a unique ID for the track using artist, name, and timestamp
+                    var trackId = $"{track.artist.name}_{track.name}_{track.date?.uts}";
+                    if (!_processedTrackIds.Contains(trackId))
+                    {
+                        _processedTrackIds.Add(trackId);
+                        _allTracks.Add(track);
+                    }
                 }
-            }
+            });
         }
 
         public async Task FinalizeAsync()
