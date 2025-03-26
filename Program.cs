@@ -74,7 +74,7 @@ namespace LastFM.ReaderCore
                 await batchProcessor.InitializeAsync();
 
                 #if DEBUG
-                    int totalPages = 1;
+                    int totalPages = 3;
                 #else
                     int totalPages = LastFMRunTime.getLastFMPages(user, pageSize, 1);
                 #endif

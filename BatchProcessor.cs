@@ -16,6 +16,7 @@ namespace LastFM.ReaderCore
         private readonly string _username;
         private readonly IErrorLogger _errorLogger;
         private readonly RetryPolicy _retryPolicy;
+        private readonly HashSet<string> _processedTrackIds;
         private readonly List<Track> _allTracks;
 
         public BatchProcessor(string storageAccount, string storageKey, string username, IErrorLogger errorLogger = null)
@@ -28,6 +29,7 @@ namespace LastFM.ReaderCore
             _errorLogger = errorLogger;
             _retryPolicy = new RetryPolicy(errorLogger: errorLogger);
             _allTracks = new List<Track>();
+            _processedTrackIds = new HashSet<string>();
         }
 
         public async Task InitializeAsync()
@@ -44,14 +46,23 @@ namespace LastFM.ReaderCore
 
         public async Task ProcessBatchAsync(IEnumerable<Track> tracks)
         {
-            _allTracks.AddRange(tracks);
+            foreach (var track in tracks)
+            {
+                // Create a unique ID for the track using artist, name, and timestamp
+                var trackId = $"{track.artist.name}_{track.name}_{track.date?.uts}";
+                if (!_processedTrackIds.Contains(trackId))
+                {
+                    _processedTrackIds.Add(trackId);
+                    _allTracks.Add(track);
+                }
+            }
         }
 
         public async Task FinalizeAsync()
         {
             try
             {
-                var blobName = $"{_username}_tracks.json";
+                var blobName = $"data/{_username}.json";
                 var blobRef = _container.GetBlockBlobReference(blobName);
 
                 // Sort tracks by scrobble time, handling null values
@@ -95,6 +106,7 @@ namespace LastFM.ReaderCore
         public void Dispose()
         {
             _allTracks.Clear();
+            _processedTrackIds.Clear();
         }
     }
 } 
