@@ -345,6 +345,18 @@
           "isRegEx": false
         },
         {
+          "sequence": "611",
+          "oldValue": " - Live at Montreux Casino, Montreux, Switzerland - July 1982",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "612",
+          "oldValue": " - Live at the Tower Theatre, Philadelphia, PA - December 1992",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
           "sequence": "620",
           "oldValue": "Live version",
           "newValue": "",
@@ -353,18 +365,6 @@
         {
           "sequence": "630",
           "oldValue": "- Live Version",
-          "newValue": "",
-          "isRegEx": false
-        },
-        {
-          "sequence": "640",
-          "oldValue": "- Live",
-          "newValue": "",
-          "isRegEx": false
-        },
-        {
-          "sequence": "650",
-          "oldValue": "- live",
           "newValue": "",
           "isRegEx": false
         },
@@ -975,12 +975,6 @@
           "isRegEx": false
         },
         {
-          "sequence": "1670",
-          "oldValue": "- Original Stereo Version",
-          "newValue": "",
-          "isRegEx": false
-        },
-        {
           "sequence": "1680",
           "oldValue": "- Album Version - Remastered",
           "newValue": "",
@@ -1259,6 +1253,48 @@
         {
           "sequence": "2150",
           "oldValue": "(feat. Van Morrison)",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2160",
+          "oldValue": " ; Single Version",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2170",
+          "oldValue": " - Live at The Woodstock Music & Art Fair, August 18, 1969",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2180",
+          "oldValue": " - Version Revisited",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2190",
+          "oldValue": " - From \"Grease\"",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2200",
+          "oldValue": "- Live",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2210",
+          "oldValue": "- live",
+          "newValue": "",
+          "isRegEx": false
+        },
+        {
+          "sequence": "2220",
+          "oldValue": "- Original Stereo Version",
           "newValue": "",
           "isRegEx": false
         }
