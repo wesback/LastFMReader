@@ -22,6 +22,7 @@ namespace LastFM.ReaderCore
         static CleaningRule cleaningRules;
         private static readonly HttpClient client = new HttpClient();
         private static readonly ConcurrentDictionary<string, Regex> regexCache = new();
+        private const int MAX_REGEX_CACHE_SIZE = 1000; // Limit regex cache size
 
         static LastFMRunTime()
         {
@@ -123,7 +124,20 @@ namespace LastFM.ReaderCore
                 if (rule.IsRegEx)
                 {
                     var regex = regexCache.GetOrAdd(rule.OldValue,
-                        key => new Regex(key, RegexOptions.IgnoreCase | RegexOptions.Compiled));
+                        key => 
+                        {
+                            // Clean up cache if it gets too large
+                            if (regexCache.Count >= MAX_REGEX_CACHE_SIZE)
+                            {
+                                // Remove oldest half of entries (simple cleanup strategy)
+                                var keysToRemove = regexCache.Keys.Take(regexCache.Count / 2).ToList();
+                                foreach (var keyToRemove in keysToRemove)
+                                {
+                                    regexCache.TryRemove(keyToRemove, out _);
+                                }
+                            }
+                            return new Regex(key, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                        });
 
                     cleanTitle = regex.Replace(cleanTitle, rule.NewValue ?? "");
                 }

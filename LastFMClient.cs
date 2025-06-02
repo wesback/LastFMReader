@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Text.Json;
 using System.Collections.Generic;
 using System.Threading;
+using System.Linq;
 using LastFM.ReaderCore.Logging;
 
 namespace LastFM.ReaderCore
@@ -18,6 +19,7 @@ namespace LastFM.ReaderCore
         private readonly IErrorLogger _errorLogger;
         private readonly Dictionary<string, string> _genreCache;
         private readonly SemaphoreSlim _genreCacheLock;
+        private const int MAX_GENRE_CACHE_SIZE = 10000; // Limit genre cache size
         public string apiKey { get; set; }
 
         public LastFMClient(ICacheService cacheService, IErrorLogger errorLogger)
@@ -110,6 +112,17 @@ namespace LastFM.ReaderCore
                 await _genreCacheLock.WaitAsync();
                 try
                 {
+                    // Check if cache is getting too large and clean it up
+                    if (_genreCache.Count >= MAX_GENRE_CACHE_SIZE)
+                    {
+                        // Remove oldest half of entries (simple cleanup strategy)
+                        var keysToRemove = _genreCache.Keys.Take(_genreCache.Count / 2).ToList();
+                        foreach (var keyToRemove in keysToRemove)
+                        {
+                            _genreCache.Remove(keyToRemove);
+                        }
+                    }
+                    
                     _genreCache[artistName] = genre;
                 }
                 finally

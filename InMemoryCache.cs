@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace LastFM.ReaderCore
 {
@@ -43,11 +44,16 @@ namespace LastFM.ReaderCore
                 Size = size
             };
 
-            _cache.AddOrUpdate(key, cacheItem, (_, __) => cacheItem);
+            var oldSize = 0L;
+            _cache.AddOrUpdate(key, cacheItem, (_, oldItem) => 
+            {
+                oldSize = oldItem.Size;
+                return cacheItem;
+            });
             
             lock (_sizeLock)
             {
-                _currentCacheSize += size;
+                _currentCacheSize += size - oldSize;
                 CleanupIfNeeded();
             }
         }
@@ -112,6 +118,7 @@ namespace LastFM.ReaderCore
         {
             if (_currentCacheSize > _maxCacheSize)
             {
+                // First pass: remove expired items
                 var expiredKeys = _cache.Where(kvp => DateTime.UtcNow > kvp.Value.ExpirationTime)
                                       .Select(kvp => kvp.Key)
                                       .ToList();
@@ -121,17 +128,25 @@ namespace LastFM.ReaderCore
                     Remove(key);
                 }
 
+                // Second pass: if still over limit, remove items more aggressively
                 if (_currentCacheSize > _maxCacheSize)
                 {
-                    // If still too large, remove oldest items
+                    var excessSize = _currentCacheSize - _maxCacheSize;
+                    var targetRemovalCount = Math.Max(10, (int)(excessSize / 1000)); // Remove more items based on excess
+                    
+                    // Remove oldest items (closest to expiration)
                     var oldestKeys = _cache.OrderBy(kvp => kvp.Value.ExpirationTime)
                                          .Select(kvp => kvp.Key)
-                                         .Take(10)
+                                         .Take(targetRemovalCount)
                                          .ToList();
 
                     foreach (var key in oldestKeys)
                     {
                         Remove(key);
+                        
+                        // Stop early if we've freed enough space
+                        if (_currentCacheSize <= _maxCacheSize * 0.8) // Target 80% of max
+                            break;
                     }
                 }
             }
@@ -139,11 +154,30 @@ namespace LastFM.ReaderCore
 
         private long GetObjectSize(object obj)
         {
-            // Simple size estimation - can be improved based on actual object types
             if (obj == null) return 0;
-            if (obj is string str) return str.Length * 2; // UTF-16
-            if (obj is Array arr) return arr.Length * 8; // Rough estimate
-            return 100; // Default size for other objects
+            
+            // More accurate size estimation
+            if (obj is string str) return str.Length * 2 + 24; // UTF-16 + object overhead
+            if (obj is Array arr) return arr.Length * 8 + 24; // Rough estimate + overhead
+            if (obj is ICollection<object> collection) return collection.Count * 8 + 24;
+            
+            // For complex objects, use a better heuristic based on JSON serialization size
+            if (obj.GetType().IsClass && !obj.GetType().IsPrimitive)
+            {
+                try
+                {
+                    // Estimate based on JSON size (rough approximation of object complexity)
+                    var json = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    return json.Length * 4 + 100; // JSON size * 4 for object overhead + base overhead
+                }
+                catch
+                {
+                    // Fallback to larger default for complex objects
+                    return 500;
+                }
+            }
+            
+            return 50; // Default size for primitives and simple objects
         }
     }
 }
